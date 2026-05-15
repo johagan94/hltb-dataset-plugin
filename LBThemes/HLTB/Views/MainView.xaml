@@ -1,0 +1,662 @@
+<Window x:Name="Window" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Unbroken.LaunchBox.Windows.Desktop;assembly=LaunchBox"
+    xmlns:transitions="clr-namespace:Unbroken.LaunchBox.Windows.Transitions;assembly=Unbroken.LaunchBox.Windows"
+    xmlns:controls="clr-namespace:Unbroken.LaunchBox.Windows.Controls;assembly=Unbroken.LaunchBox.Windows"
+    xmlns:coverFlow="clr-namespace:Unbroken.LaunchBox.Windows.Controls.CoverFlow;assembly=Unbroken.LaunchBox.Windows"
+    xmlns:converter="clr-namespace:Unbroken.LaunchBox.Windows.Converters;assembly=Unbroken.LaunchBox.Windows"
+    xmlns:dsktp="clr-namespace:Unbroken.LaunchBox.Windows.Desktop.Controls;assembly=LaunchBox" 
+    xmlns:contextMenus="clr-namespace:Unbroken.LaunchBox.Windows.Desktop.ContextMenus;assembly=LaunchBox"
+    mc:Ignorable="d"
+    Title="LaunchBox"
+    Height="1000"
+    Width="1500"
+    WindowStyle="None"
+    AllowsTransparency="True">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="28" ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <converter:MultiplyByConverter x:Key="MultiplyByConverter" />
+        <converter:IsNotEqualToConverter x:Key="NotEqualTo" />
+        <converter:IsGreaterThanConverter x:Key="IsGreaterThan"/>
+        <converter:IsLessThanOrEqualToConverter x:Key="IsLessThan"/>
+        <converter:ToUpperConverter x:Key="UpperCase"/>
+        <Style x:Key="GridSplitterStyle" TargetType="GridSplitter">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridSplitter}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="0" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle StrokeThickness="1" Stroke="{Binding ForegroundBrush}" SnapsToDevicePixels="true" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid MinWidth="600" Background="#2A2B34">
+        <Grid.Resources>
+            <local:DoubleGridLengthConverter x:Key="DoubleGridLengthConverter" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding Path=SideBarWidth, Mode=TwoWay, Converter={StaticResource DoubleGridLengthConverter}}" MinWidth="{Binding Path=SideBarMinWidth}" MaxWidth="650" />
+            <ColumnDefinition Width="{Binding Path=SideBarGridSplitterWidth}" />
+            <ColumnDefinition Width="*" MinWidth="300" />
+            <ColumnDefinition Width="{Binding Path=GameDetailsGridSplitterWidth}" />
+            <ColumnDefinition Width="{Binding Path=GameDetailsWidth, Mode=TwoWay, Converter={StaticResource DoubleGridLengthConverter}}">
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Setter Property="MinWidth" Value="450"/>
+                        <Setter Property="MaxWidth" Value="1400"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=GameDetailsMinWidth}" Value="0">
+                                <Setter Property="MinWidth" Value="0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Converter={StaticResource IsLessThan}, ConverterParameter='1080', ElementName=Window, Path=ActualHeight}" Value="True">
+                                <Setter Property="MaxWidth" Value="1200"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <transitions:TransitionPresenter x:Name="ContentBackgroundViewModel" Grid.RowSpan="2" Grid.ColumnSpan="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Focusable="False" 
+            TransitionSelector="{Binding ContentBackgroundTransitionSelector}" Content="{Binding ContentBackgroundView}" />
+        <Rectangle Stretch="Fill" Fill="#2A2B34" Grid.RowSpan="2" Grid.ColumnSpan="5" Opacity="{Binding Converter={StaticResource MultiplyByConverter}, ConverterParameter='0.003921568627451', Path=BackgroundFadeBrush.Color.A}" Focusable="False" />
+        <!-- Caching Progress Bar -->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Height="3" Panel.ZIndex="99" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding ProcessingVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ProcessingWidth}" />
+                <ColumnDefinition Width="{Binding ProcessingWidthLeft}" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="{Binding SelectionBackgroundBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Grid>
+
+        <!-- Side Bar -->
+        <ContentControl x:Name="SideBarViewModel" Grid.Column="0" Grid.Row="1" Focusable="False" Visibility="{Binding SideBarVisibility}" SnapsToDevicePixels="True" />
+
+        <!-- Side Bar Splitter -->
+        <GridSplitter Background="#E01f2027" Grid.Column="1" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" Visibility="{Binding SideBarVisibility}" SnapsToDevicePixels="True" />
+
+        <!-- Main Content -->
+        <transitions:TransitionPresenter TransitionSelector="{Binding ContentTransitionSelector}" Content="{Binding ContentView}" Grid.Column="2" Grid.Row="1" Focusable="False" SnapsToDevicePixels="True" />
+
+        <GridSplitter Grid.Column="3" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Panel.ZIndex="100" Focusable="True" Background="#E01f2027" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" SnapsToDevicePixels="True" Visibility="{Binding GameDetailsVisibility}">
+            <GridSplitter.Template>
+                <ControlTemplate TargetType="{x:Type GridSplitter}">
+                    <Border Background="Transparent" />
+                </ControlTemplate>
+            </GridSplitter.Template>
+        </GridSplitter>
+
+        <!-- Game Details -->
+        <transitions:TransitionPresenter TransitionSelector="{Binding GameDetailsTransitionSelector}" Content="{Binding GameDetailsView}" Grid.Column="4" Grid.Row="1" SnapsToDevicePixels="True" Visibility="{Binding GameDetailsVisibility}" />
+
+
+
+
+
+
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#232429" SnapsToDevicePixels="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Top Bar Left -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" WindowChrome.IsHitTestVisibleInChrome="True" Margin="{Binding WindowControlsMargin}" SnapsToDevicePixels="True">
+                <Button x:Name="MenuDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding MenuLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <StackPanel x:Name="StackPanel" Orientation="Horizontal" Margin="5, 6, 10, 0" Background="Transparent">
+                                            <Image x:Name="Logo" HorizontalAlignment="Left" VerticalAlignment="Center" Width="24" Margin="4 -4 4 0" RenderTransformOrigin="0.5 0.5" Source="pack://application:,,,/LaunchBox;component/WpfResources/Logo.png">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <RotateTransform Angle="0"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <Border Margin="10,0,0,0" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                            </Border>
+                                        </StackPanel>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="StackPanel" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="Logo" Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)" Duration="0:0:0.4" To="720">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseInOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="Logo" Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)" Duration="0:0:0.4" To="0">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseInOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="ToolsDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="10, 6, 10, 0">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding ToolsText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    </StackPanel>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="ViewDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="10, 6, 10, 0">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding ViewText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    </StackPanel>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="ArrangeByDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="10, 6, 10, 0">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding ArrangeByText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    </StackPanel>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="ImageGroupDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True"
+                    FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="10, 6, 10, 0">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding ImageGroupText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    </StackPanel>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="BadgesDropDown" Height="26" Background="Transparent" BorderThickness="0" Focusable="True"
+                    FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="10,6, 10, 0">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Text="{Binding BadgesText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                    </StackPanel>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                            <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+
+
+            </StackPanel>
+
+            <!-- Controls / Buttons Bar -->
+            <ContentControl x:Name="ControlsViewModel" Grid.Column="1" Focusable="True" Visibility="{Binding ControlsVisibility}" SnapsToDevicePixels="True" />
+
+            <!-- Top Bar Right -->
+            <Grid Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="30" SnapsToDevicePixels="True">
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right"
+                WindowChrome.IsHitTestVisibleInChrome="True" Margin="{Binding WindowControlsMargin}" SnapsToDevicePixels="True">
+
+                    <!-- Notification Bell -->
+                    <dsktp:NotificationsButton x:Name="Notifications" Margin="5,1,20,0" Background="Transparent" BorderThickness="0" Focusable="True" Opacity="1.0" FocusVisualStyle="{x:Null}" RenderTransformOrigin="0.5,0">
+                        <Button.Style>
+                            <Style TargetType="{x:Type dsktp:NotificationsButton}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type dsktp:NotificationsButton}">
+                                            <Grid x:Name="Grid" Margin="0,0" Background="Transparent" RenderTransformOrigin="0.5,0">
+                                                <Grid.RenderTransform>
+                                                    <RotateTransform Angle="0"/>
+                                                </Grid.RenderTransform>
+                                                <Path x:Name="Bell" Fill="White" Opacity="0.4" Stretch="Fill" Height="16" Width="13" Margin="10,0" HorizontalAlignment="Center" Data="M48.3149 52.2484C33.7174 56.3509 18.2721 56.3542 3.67282 52.2581C-0.942449 50.9544 0.212581 43.9029 5.14011 44.3187V29.1341C5.14011 1.59404 46.8598 1.60711 46.8598 29.1341V44.3138C51.7777 43.9008 52.9548 50.9731 48.3149 52.2484ZM19.22 57.0542C19.6841 58.4892 20.5912 59.74 21.8111 60.6268C23.0309 61.5137 24.5005 61.9909 26.0086 61.9898C27.5168 61.9886 28.9857 61.5093 30.2042 60.6207C31.4227 59.732 32.3281 58.4799 32.79 57.0442C28.2739 57.4026 23.7366 57.406 19.22 57.0542ZM32.72 7.28421C32.72 -2.41542 19.28 -2.41704 19.28 7.29421C23.3292 5.67256 28.4697 6.22163 32.72 7.28421Z"/>
+                                                <Path x:Name="Overlay" Fill="White" Opacity="0" Stretch="Fill" Height="16" Width="13" Margin="10,0" HorizontalAlignment="Center" Data="M50.3149 52.2484C35.7174 56.3509 20.2721 56.3542 5.67282 52.2581C1.05755 50.9544 2.21258 43.9029 7.14011 44.3187V29.1341C7.14011 1.59404 48.8598 1.60711 48.8598 29.1341V44.3138C53.7777 43.9008 54.9548 50.9731 50.3149 52.2484ZM21.22 57.0542C21.6841 58.4892 22.5912 59.74 23.8111 60.6268C25.0309 61.5137 26.5005 61.9909 28.0086 61.9898C29.5168 61.9886 30.9857 61.5093 32.2042 60.6207C33.4227 59.732 34.328 58.4799 34.79 57.0442C30.2739 57.4026 25.7366 57.406 21.22 57.0542ZM34.72 7.28421C34.72 -2.41542 21.28 -2.41704 21.28 7.29421C25.3292 5.67256 30.4697 6.22163 34.72 7.28421ZM55.7529 21.6878C54.1011 15.6596 50.3803 10.405 45.2426 6.84504C45.0245 6.69659 44.7565 6.64032 44.4971 6.68851C44.2377 6.73669 44.0078 6.88541 43.8575 7.10229C43.7072 7.31917 43.6487 7.58665 43.6946 7.84648C43.7406 8.10631 43.8874 8.33745 44.103 8.48958C48.8542 11.7806 52.2954 16.6391 53.8232 22.2132C53.8946 22.4672 54.0634 22.6827 54.2929 22.8127C54.5225 22.9428 54.7941 22.9769 55.0486 22.9076C55.3032 22.8383 55.52 22.6712 55.6519 22.4427C55.7839 22.2143 55.8201 21.9429 55.7529 21.6878ZM11.8969 8.48958C12.1125 8.33745 12.2593 8.10631 12.3053 7.84648C12.3513 7.58665 12.2928 7.31917 12.1425 7.10229C11.9922 6.88541 11.7623 6.73669 11.5028 6.68851C11.2434 6.64032 10.9754 6.69659 10.7573 6.84504C5.61964 10.405 1.89882 15.6596 0.246998 21.6878C0.179755 21.9429 0.216042 22.2143 0.347954 22.4427C0.479867 22.6712 0.696716 22.8383 0.951265 22.9076C1.20581 22.9769 1.47744 22.9428 1.70696 22.8127C1.93649 22.6827 2.10533 22.4672 2.17669 22.2132C3.70452 16.6391 7.1457 11.7806 11.8969 8.48958Z">
+                                                    <Path.Effect>
+                                                        <DropShadowEffect x:Name="DropShadow" Color="White" BlurRadius="55" ShadowDepth="0" Opacity="1.0" />
+                                                    </Path.Effect>
+                                                </Path>
+                                                <Grid x:Name="GridNotification" Opacity="0">
+                                                    <Border x:Name="Border" Height="12" Width="12" CornerRadius="6" Opacity="0" BorderThickness="1" BorderBrush="#232429" Background="#30DB72" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
+                                                        <Viewbox Margin="-1,0,0,0">
+                                                            <TextBlock Text="{Binding ElementName=Notifications, Path=UnreadNotifications}" FontWeight="Bold" Foreground="#232429" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                        </Viewbox>
+                                                    </Border>
+                                                </Grid>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Converter={StaticResource IsGreaterThan}, ConverterParameter='0', ElementName=Notifications, Path=UnreadNotifications}" Value="True">
+                                                    <Setter TargetName="Bell" Property="Opacity"  Value="0.7" />
+                                                </DataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding ElementName=Grid, Path=IsMouseOver}" Value="True"/>
+                                                        <Condition Binding="{Binding Converter={StaticResource IsGreaterThan}, ConverterParameter='0', ElementName=Notifications, Path=UnreadNotifications}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="Bell" Property="Opacity" Value="1.0"/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding ElementName=Grid, Path=IsMouseOver}" Value="True"/>
+                                                        <Condition Binding="{Binding ElementName=Notifications, Path=UnreadNotifications}" Value="0"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="Bell" Property="Opacity" Value="0.7"/>
+                                                </MultiDataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=Notifications, Path=UnreadNotifications}" Value="0">
+                                                    <DataTrigger.EnterActions>
+                                                        <StopStoryboard BeginStoryboardName="NotificationRaisedAnimation" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                                <EventTrigger RoutedEvent="NotificationRaised">
+                                                    <BeginStoryboard Name="NotificationRaisedAnimation">
+                                                        <Storyboard FillBehavior="HoldEnd">
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Grid" Storyboard.TargetProperty="(Grid.RenderTransform).(RotateTransform.Angle)" AutoReverse="True">
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0">
+                                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                                        <SineEase EasingMode="EaseOut"/>
+                                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                                </EasingDoubleKeyFrame>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="10">
+                                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                                        <SineEase EasingMode="EaseOut"/>
+                                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                                </EasingDoubleKeyFrame>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="-10">
+                                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                                        <SineEase EasingMode="EaseInOut"/>
+                                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                                </EasingDoubleKeyFrame>
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Overlay" Storyboard.TargetProperty="Opacity" AutoReverse="True">
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity">
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0"/>
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                            <DoubleAnimation Storyboard.TargetName="GridNotification" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" To="1"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </dsktp:NotificationsButton>
+
+                    <!-- Sync Icons -->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="Disabled">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <controls:CloudSyncIndicator x:Name="CloudIndicator" Height="11" Width="11" Margin="0,1,20,0">
+                            <Grid>
+                                <coverFlow:FlowImage x:Name="CloudStatus" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <coverFlow:FlowImage.Style>
+                                        <Style TargetType="coverFlow:FlowImage">
+                                            <Setter Property="ImagePath" Value="pack://application:,,,/WpfResources/CloudInSync.png" />
+                                            <Setter Property="LoadImage" Value="True"/>
+                                            <Setter Property="Opacity" Value="0.4"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="Syncing">
+                                                    <Setter Property="LoadImage" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="OutOfSync">
+                                                    <Setter Property="ImagePath" Value="pack://application:,,,/WpfResources/CloudOutOfSync.png" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="Disabled">
+                                                    <Setter Property="LoadImage" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </coverFlow:FlowImage.Style>
+                                </coverFlow:FlowImage>
+                                <Rectangle>
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Fill" Value="#29C44D"/>
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="InSync">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" To="1.0" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="OutOfSync">
+                                                    <Setter Property="Fill" Value="#FDB404" />
+                                                    <Setter Property="Opacity" Value="1.0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=CloudStatus}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                                <coverFlow:FlowImage x:Name="Loading" Opacity="0.5" ImagePath="pack://application:,,,/WpfResources/CloudSyncing.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <coverFlow:FlowImage.Style>
+                                        <Style TargetType="coverFlow:FlowImage">
+                                            <Setter Property="LoadImage" Value="False"/>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <EventTrigger RoutedEvent="Loaded">
+                                                    <BeginStoryboard x:Name="LoadingRotation">
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)" From="0" To="359" Duration="0:0:1" RepeatBehavior="Forever" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=CloudIndicator, Path=SyncState}" Value="Syncing">
+                                                    <Setter Property="LoadImage" Value="True"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </coverFlow:FlowImage.Style>
+                                </coverFlow:FlowImage>
+                            </Grid>
+                        </controls:CloudSyncIndicator>
+                    </Grid>
+
+                    <Button x:Name="OpenAchievementProfile" Height="26" Background="Transparent" BorderThickness="0" Visibility="{Binding AchievementScoreVisibility}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" ContextMenu="{x:Static contextMenus:AchievementsMenu.Instance}">
+                        <StackPanel Orientation="Horizontal" Margin="10, 6, 10, 0">
+                            <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" Text="{Binding AchievementScoreText}" />
+                        </StackPanel>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- PLEASE NOTE: Below is the portion of the theme that displays the licensed user name. It is required that this info
+                     is displayed in the title bar for licensing reasons. Themes that attempt to hide or alter the licensed user name
+                     will not be permitted; they will be removed from the forums and banned from future releases of LaunchBox. -->
+                    <Button x:Name="License" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                        <TextBlock Foreground="{Binding ForegroundBrush}" FontSize="11" Margin="10, 6, 10, 0" Text="{Binding LicenseText}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Light.ttf#Poppins Light" />
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter x:Name="Text" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.5" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Text" Property="Opacity" Value="1.0" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="Minimize" ToolTip="Minimize" Width="34" Height="26" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                        <Grid Width="34" Height="26">
+                            <Polygon Points="13,15 22,15, 22,17, 13,17" StrokeThickness="0" Fill="White" />
+                        </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#33FFFFFF" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="Maximize" ToolTip="Maximize" Width="34" Height="26" Background="Transparent" BorderThickness="0"
+                    Visibility="{Binding MaximizeVisibility}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                        <Grid Width="34" Height="26">
+                            <Polygon Points="13,9 22,9 22,12, 13,12" StrokeThickness="0" Fill="White" />
+                            <Line X1="14" Y1="9" X2="14" Y2="18" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="22" Y1="9" X2="22" Y2="18" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="14" Y1="18" X2="22" Y2="18" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                        </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#33FFFFFF" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="Restore" ToolTip="Restore" Width="34" Height="26" Background="Transparent" BorderThickness="0"
+                    Visibility="{Binding RestoreVisibility}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                        <Grid Width="34" Height="26">
+                            <Polygon Points="15,9 22,9 22,11 15,11" StrokeThickness="0" Fill="White" />
+                            <Polygon Points="12,12 19,12 19,14 12,14" StrokeThickness="0" Fill="White" />
+                            <Line X1="16" Y1="9" X2="16" Y2="13" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="22" Y1="9" X2="22" Y2="16" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="18" Y1="16" X2="22" Y2="16" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="19" Y1="12" X2="19" Y2="19" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="13" Y1="12" X2="13" Y2="19" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                            <Line X1="13" Y1="19" X2="19" Y2="19" Stroke="White" StrokeThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" />
+                        </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#33FFFFFF" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="Close" ToolTip="Close" Width="34" Background="Transparent" BorderThickness="0" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}">
+                        <Grid Width="34">
+                            <Polygon Points="11,9 13,9 16,12 19,9 21,9 17,13 21,17 19,17 16,14 13,17 11,17 15,13"
+                            StrokeThickness="0" Fill="White">
+                            </Polygon>
+                        </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#AAb70505" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+
+        </Grid>
+
+        <!-- Working Bar / Download Progress Bar -->
+        <ContentControl x:Name="WorkingViewModel" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Center" Visibility="{Binding WorkingVisibility}" Focusable="False" />
+
+    </Grid>
+</Window>

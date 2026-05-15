@@ -1,0 +1,142 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="600"
+    Padding="{Binding TopOuterPadding}"
+    Cursor="{Binding Cursor}">
+    <UserControl.Resources>
+        <Style x:Key="FocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle StrokeThickness="1" Stroke="{Binding ForegroundBrush}" SnapsToDevicePixels="true">
+                        </Rectangle>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+
+    <Border Background="#DD141519" CornerRadius="0 0 15 15" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <Grid Margin="12 5 10 5" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+                <Grid Width="550">
+                    <ProgressBar x:Name="ProgressBar" Margin="0,3" Maximum="{Binding Maximum}" Value="{Binding Value}" IsIndeterminate="{Binding Indeterminate}" Opacity="0.9">
+                        <ProgressBar.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Border Height="{Binding ActualHeight, ElementName=ProgressBar}" Width="{Binding ActualWidth, ElementName=ProgressBar}" Background="#2A2B34" BorderThickness="0" CornerRadius="9"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </ProgressBar.OpacityMask>
+                        <ProgressBar.Style>
+                            <Style TargetType="{x:Type ProgressBar}">
+                                <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush}"/>
+                                <Setter Property="Background" Value="#11000000"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="#D0393939"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ProgressBar}">
+                                            <Grid Name="TemplateRoot" SnapsToDevicePixels="True">
+                                                <Border x:Name="PART_Track" Margin="0" CornerRadius="9" BorderThickness="{TemplateBinding BorderThickness}"
+                                                BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                                    <Grid ClipToBounds="True" SnapsToDevicePixels="True">
+                                                        <Grid.OpacityMask>
+                                                            <VisualBrush>
+                                                                <VisualBrush.Visual>
+                                                                    <Border Margin="0" Height="{TemplateBinding ActualHeight}" Width="{TemplateBinding ActualWidth}"
+                                                                    CornerRadius="9" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="Transparent" Background="Black"/>
+                                                                </VisualBrush.Visual>
+                                                            </VisualBrush>
+                                                        </Grid.OpacityMask>
+                                                        <Border x:Name="PART_Indicator" Margin="0" CornerRadius="9,0,0,9" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}"
+                                                        BorderThickness="0" SnapsToDevicePixels="True"/>
+                                                        <Border x:Name="PART_GlowRect" Margin="0" CornerRadius="9" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}"
+                                                        BorderThickness="0" SnapsToDevicePixels="True"/>
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsIndeterminate" Value="true">
+                                                    <Setter TargetName="PART_Indicator" Property="Background" Value="Transparent" />
+                                                    <Setter TargetName="PART_GlowRect" Property="Width" Value="75" />
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ThicknessAnimation 
+                                                                Storyboard.TargetName="PART_GlowRect"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                From="0,0,0,0"  To="480,0,0,0" Duration="0:0:2"
+                                                                AutoReverse="True" RepeatBehavior="Forever" AccelerationRatio="0.2">
+                                                                    <ThicknessAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseInOut" />
+                                                                    </ThicknessAnimation.EasingFunction>
+                                                                </ThicknessAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ProgressBar.Style>
+                    </ProgressBar>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding TopText}" Foreground="{Binding ButtonForegroundBrush}" FontSize="10"
+                Margin="10,0,0,0" Visibility="{Binding TopTextVisibility}" TextTrimming="CharacterEllipsis" />
+                </Grid>
+                <Grid Margin="5 0 0 0" Grid.Column="2" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button x:Name="Cancel" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" ToolTip="{Binding CancelLabel}" IsEnabled="{Binding CancelEnabled}" HorizontalAlignment="Left">
+                        <Grid Background="Transparent">
+                            <Path Stretch="Uniform" Height="14" Width="14" Fill="Red"
+                        Data="M10,0 C4.5,0 0,4.5 0,10 C0,15.5 4.5,20 10,20 C15.5,20 20,15.5 20,10 C20,4.5 15.5,0 10,0 L10,0 Z M15,13.6 L13.6,15 L10,11.4 L6.4,15 L5,13.6 L8.6,10 L5,6.4 L6.4,5 L10,8.6 L13.6,5 L15,6.4 L11.4,10 L15,13.6 L15,13.6 Z" />
+                        </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                <ContentPresenter x:Name="Path" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.3" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Path" Property="Opacity" Value="1.0" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </StackPanel>
+            <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                <TextBlock HorizontalAlignment="Right" Text="{Binding BottomText}" Foreground="{Binding ButtonForegroundBrush}" FontSize="10"
+                    Margin="10,2,0,5" Visibility="{Binding BottomTextVisibility}" Opacity="0.6" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock FontSize="10" VerticalAlignment="Center" Margin="0,2,10,5" Visibility="{Binding ErrorLinkVisibility}">
+                    <Hyperlink Name="ErrorLink" Foreground="{Binding ButtonForegroundBrush}">
+                        <TextBlock Text="{Binding ErrorLinkText}" />
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

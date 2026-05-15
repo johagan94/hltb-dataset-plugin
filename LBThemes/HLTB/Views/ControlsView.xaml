@@ -1,0 +1,546 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:local="clr-namespace:Unbroken.LaunchBox.Windows.Desktop;assembly=LaunchBox"
+             xmlns:controls="clr-namespace:Unbroken.LaunchBox.Windows.Desktop.Controls;assembly=LaunchBox"
+             xmlns:lb="clr-namespace:Unbroken.LaunchBox.Windows.Desktop;assembly=LaunchBox"
+             mc:Ignorable="d" 
+             d:DesignHeight="50"
+             d:DesignWidth="900"
+             Focusable="False">
+    <UserControl.Resources>
+        <Style x:Key="FocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle StrokeThickness="1" Stroke="{Binding ForegroundBrush}" SnapsToDevicePixels="true">
+                        </Rectangle>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PlaybackFocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle StrokeThickness="1" Stroke="{Binding ForegroundBrush}" SnapsToDevicePixels="true" Margin="10,5,10,10">
+                        </Rectangle>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.75" />
+                    <Setter Property="Foreground" Value="{Binding HoverButtonForegroundBrush}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0" />
+                    <Setter Property="Foreground" Value="{Binding DisabledButtonForegroundBrush}" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Background" Value="#787878" />
+            <Setter Property="Foreground" Value="{Binding ButtonForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="#787878" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Opacity" Value="0.3" />
+            <Setter Property="Margin" Value="10,5,0,10" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="18, 0, 18, 0" BorderThickness="1" CornerRadius="5" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageSliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="#30FFFFFF" CornerRadius="12 12 0 0" Width="24" Opacity="1" SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageSliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="#AAFFFFFF" CornerRadius="0 0 12 12" Width="24" Opacity="1" SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageSliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Name="Thumb" Height="10" Width="24" Background="#AAFFFFFF" HorizontalAlignment="Center" SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ImageSlider"  TargetType="Slider">
+            <Border x:Name="SliderBorder" Width="24" Height="150" BorderThickness="0" CornerRadius="12" BorderBrush="Transparent" Background="Transparent" UseLayoutRounding="True" SnapsToDevicePixels="True">
+                <Border.OpacityMask>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border 
+                    Background="Black"
+                    SnapsToDevicePixels="True"
+                    CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                    Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.OpacityMask>
+                <Track x:Name="PART_Track">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ImageSliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ImageSliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ImageSliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="Image_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Template" Value="{StaticResource ImageSlider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VolumeSliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="#30FFFFFF" CornerRadius="12 12 0 0" Width="24" Opacity="1" SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="VolumeSliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="#AAFFFFFF" CornerRadius="0 0 12 12" Width="24" Opacity="1" SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="VolumeSliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Name="Thumb" Height="10" Width="24" Background="#AAFFFFFF" HorizontalAlignment="Center" SnapsToDevicePixels="True" UseLayoutRounding="True" Cursor="Hand" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False" />
+                                    <Condition Binding="{Binding Path=VolumeValue, Mode=OneWay}" Value="0"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Thumb" Property="Background" Value="#30FFFFFF" />
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="VolumeSlider"  TargetType="Slider">
+            <Border x:Name="SliderBorder" Width="24" Height="150" BorderThickness="0" CornerRadius="12" BorderBrush="Transparent" Background="Transparent" UseLayoutRounding="True" SnapsToDevicePixels="True">
+                <Border.OpacityMask>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border 
+                    Background="Black"
+                    SnapsToDevicePixels="True"
+                    CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                    Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.OpacityMask>
+                <Track x:Name="PART_Track">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource VolumeSliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource VolumeSliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource VolumeSliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="Volume_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Template" Value="{StaticResource VolumeSlider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28" />
+        </Grid.RowDefinitions>
+
+        <!-- Status Text -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10 4 0 0" VerticalAlignment="Top">
+            <TextBlock Text="|" Foreground="White" Opacity="0.3" Margin="0 0 20 0" />
+            <TextBlock Grid.Column="1" Foreground="White" FontSize="11" Margin="0 4 0 0" FontFamily="LAUNCHBOX_ROOT_FOLDER/LBThemes/Big Details/Fonts/Gilroy-Light.ttf#Gilroy Light" VerticalAlignment="Center" TextAlignment="Left" Opacity="0.3" Text="{Binding StatusText}" />
+        </StackPanel>
+
+        <!-- Controls Popup Button -->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="0 3 0 0" VerticalAlignment="Top">
+            <ToggleButton Name="ControlsButton" Height="20" Width="20" Margin="0 0 0 0" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Height="20" Width="20" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Grid Height="20" Width="20" Background="Transparent" Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="0.8" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Viewbox  Height="20" Width="20">
+                                    <Grid>
+                                        <Path Fill="White" Data="M6,4C3.8,4,2,5.8,2,8c0,1.9,1.3,3.4,3,3.9V27c0,0.6,0.4,1,1,1s1-0.4,1-1V11.9c1.7-0.4,3-2,3-3.9C10,5.8,8.2,4,6,4z" />
+                                        <Path Fill="White" Data="M17,16.1V5c0-0.6-0.4-1-1-1s-1,0.4-1,1v11.1c-1.7,0.4-3,2-3,3.9s1.3,3.4,3,3.9V27c0,0.6,0.4,1,1,1s1-0.4,1-1v-3.1   c1.7-0.4,3-2,3-3.9S18.7,16.6,17,16.1z" />
+                                        <Path Fill="White" Data="M30,14c0-1.9-1.3-3.4-3-3.9V5c0-0.6-0.4-1-1-1s-1,0.4-1,1v5.1c-1.7,0.4-3,2-3,3.9s1.3,3.4,3,3.9V27c0,0.6,0.4,1,1,1   s1-0.4,1-1v-9.1C28.7,17.4,30,15.9,30,14z" />
+                                    </Grid>
+                                </Viewbox>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+            <Popup IsOpen="{Binding IsChecked, ElementName=ControlsButton}" StaysOpen="False" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Scroll">
+                <Border Height="270" Width="120" Background="#DD1F2027" CornerRadius="5">
+                    <Grid Width="80" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0 25">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="183"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!-- Box Slider -->
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" RenderTransformOrigin="0.5 0.5">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="IsHitTestVisible" Value="True"/>
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={x:Static lb:App.MainViewModel}, Path=ListView}" Value="True">
+                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                            <Setter Property="Opacity" Value="0.5" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <Slider VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Height="Auto" Maximum="0.50" Minimum="0.05" Value="{Binding Path=BoxSize, Mode=TwoWay}" Orientation="Vertical" SmallChange="0.001" LargeChange="0.01"
+                    cal:Message.Attach="[Event ValueChanged] = [Action OnSliderValueChanged()];" Style="{StaticResource Image_Slider}" RenderTransformOrigin="0.5 0.5">
+                                <i:Interaction.Triggers>
+                                    <local:RoutedEventTrigger RoutedEvent="Thumb.DragCompleted">
+                                        <cal:ActionMessage MethodName="OnSliderDragCompleted" />
+                                    </local:RoutedEventTrigger>
+                                    <local:RoutedEventTrigger RoutedEvent="Thumb.DragStarted">
+                                        <cal:ActionMessage MethodName="OnSliderDragStarted" />
+                                    </local:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
+                                <Slider.FocusVisualStyle>
+                                    <Style>
+                                        <Setter Property="Control.Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <Rectangle StrokeThickness="1" Stroke="#5C6066" SnapsToDevicePixels="true"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Slider.FocusVisualStyle>
+                            </Slider>
+                            <Grid Margin="0 13 0 0" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Top" Opacity="0.5">
+                                <Path Fill="White" Stretch="Uniform" Data="M19,2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a2.81,2.81,0,0,0,.49-.05l.3-.07.07,0h0l.05,0,.37-.14.13-.07c.1-.06.21-.11.31-.18a3.79,3.79,0,0,0,.38-.32l.07-.09a2.69,2.69,0,0,0,.27-.32l.09-.13a2.31,2.31,0,0,0,.18-.35,1,1,0,0,0,.07-.15c.05-.12.08-.25.12-.38l0-.15A2.6,2.6,0,0,0,22,19V5A3,3,0,0,0,19,2ZM5,20a1,1,0,0,1-1-1V14.69l3.29-3.3h0a1,1,0,0,1,1.42,0L17.31,20Zm15-1a1,1,0,0,1-.07.36,1,1,0,0,1-.08.14.94.94,0,0,1-.09.12l-5.35-5.35.88-.88a1,1,0,0,1,1.42,0h0L20,16.69Zm0-5.14L18.12,12a3.08,3.08,0,0,0-4.24,0l-.88.88L10.12,10a3.08,3.08,0,0,0-4.24,0L4,11.86V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" />
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical" Margin="40 0 0 0" RenderTransformOrigin="0.5 0.5">
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Slider x:Name="VolumeSlider"
+                                        Width="Auto"
+                                        Height="Auto"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        Value="{Binding Path=VolumeValue, Mode=TwoWay}"
+                                        Orientation="Vertical"
+                                        Style="{StaticResource Volume_Slider}"
+                                        RenderTransformOrigin="0.5 0.5"
+                                        cal:Message.Attach="[Event PreviewMouseLeftButtonDown] = [Action OnVolumeSliderPreviewMouseLeftButtonDown($source, $eventArgs)]; [Event PreviewMouseMove] = [Action OnVolumeSliderPreviewMouseMove($source, $eventArgs)]; [Event PreviewMouseLeftButtonUp] = [Action OnVolumeSliderPreviewMouseLeftButtonUp($source, $eventArgs)]">
+                                    <i:Interaction.Triggers>
+                                        <local:RoutedEventTrigger RoutedEvent="Thumb.DragCompleted">
+                                            <cal:ActionMessage MethodName="OnVolumeSliderDragCompleted" />
+                                        </local:RoutedEventTrigger>
+                                        <local:RoutedEventTrigger RoutedEvent="Thumb.DragStarted">
+                                            <cal:ActionMessage MethodName="OnVolumeSliderDragStarted" />
+                                        </local:RoutedEventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Slider>
+                                <TextBlock x:Name="VolumeText" Text="{Binding Path=VolumeValue, NotifyOnTargetUpdated=True}" IsHitTestVisible="False" Foreground="#DD141622" FontSize="11" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1.0" />
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1.0" />
+                                                                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0" />
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <Button Margin="0 13 0 0"
+                                    Width="20"
+                                    Height="20"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Opacity="0.5"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    Focusable="False"
+                                    cal:Message.Attach="[Action ToggleVolumeMute()]">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid Width="20" Height="20" Background="Transparent">
+                                            <Path Stretch="Uniform" Fill="White">
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Setter Property="Data" Value="M3,10 L3,14 C3,14.55 3.45,15 4,15 L7,15 L10.29,18.29 C10.92,18.92 12,18.47 12,17.58 L12,6.41 C12,5.52 10.92,5.07 10.29,5.7 L7,9 L4,9 C3.45,9 3,9.45 3,10 Z M16.5,12 C16.5,10.23 15.48,8.71 14,7.97 L14,16.02 C15.48,15.29 16.5,13.77 16.5,12 Z M14,4.45 L14,4.65 C14,5.03 14.25,5.36 14.6,5.5 C17.18,6.53 19,9.06 19,12 C19,14.94 17.18,17.47 14.6,18.5 C14.24,18.64 14,18.97 14,19.35 L14,19.55 C14,20.18 14.63,20.62 15.21,20.4 C18.6,19.11 21,15.84 21,12 C21,8.16 18.6,4.89 15.21,3.6 C14.63,3.37 14,3.82 14,4.45 Z"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=VolumeValue, Mode=OneWay}" Value="0">
+                                                                <Setter Property="Data" Value="M3.63,3.63 C3.24,4.02 3.24,4.65 3.63,5.04 L7.29,8.7 L7,9 L4,9 C3.45,9 3,9.45 3,10 L3,14 C3,14.55 3.45,15 4,15 L7,15 L10.29,18.29 C10.92,18.92 12,18.47 12,17.58 L12,13.41 L16.18,17.59 C15.69,17.96 15.16,18.27 14.58,18.5 C14.22,18.65 14,19.03 14,19.42 C14,20.14 14.73,20.6 15.39,20.33 C16.19,20 16.94,19.56 17.61,19.02 L18.95,20.36 C19.34,20.75 19.97,20.75 20.36,20.36 C20.75,19.97 20.75,19.34 20.36,18.95 L5.05,3.63 C4.66,3.24 4.03,3.24 3.63,3.63 Z M19,12 C19,12.82 18.85,13.61 18.59,14.34 L20.12,15.87 C20.68,14.7 21,13.39 21,12 C21,8.17 18.6,4.89 15.22,3.6 C14.63,3.37 14,3.83 14,4.46 L14,4.65 C14,5.03 14.25,5.36 14.61,5.5 C17.18,6.54 19,9.06 19,12 Z M10.29,5.71 L10.12,5.88 L12,7.76 L12,6.41 C12,5.52 10.92,5.08 10.29,5.71 Z M16.5,12 C16.5,10.23 15.48,8.71 14,7.97 L14,9.76 L16.48,12.24 C16.49,12.16 16.5,12.08 16.5,12 Z" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                            <Path Stretch="Uniform" Data="M3,10 L3,14 C3,14.55 3.45,15 4,15 L7,15 L10.29,18.29 C10.92,18.92 12,18.47 12,17.58 L12,6.41 C12,5.52 10.92,5.07 10.29,5.7 L7,9 L4,9 C3.45,9 3,9.45 3,10 Z M16.5,12 C16.5,10.23 15.48,8.71 14,7.97 L14,16.02 C15.48,15.29 16.5,13.77 16.5,12 Z M14,4.45 L14,4.65 C14,5.03 14.25,5.36 14.6,5.5 C17.18,6.53 19,9.06 19,12 C19,14.94 17.18,17.47 14.6,18.5 C14.24,18.64 14,18.97 14,19.35 L14,19.55 C14,20.18 14.63,20.62 15.21,20.4 C18.6,19.11 21,15.84 21,12 C21,8.16 18.6,4.89 15.21,3.6 C14.63,3.37 14,3.82 14,4.45 Z" Fill="White" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Margin="0 25 0 0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+                            <!-- Previous Song Button -->
+                            <Button Name="Previous" ToolTip="Previous Track" Content="Previous" Command="{Binding PreviousCommand}" IsEnabled="{Binding PreviousEnabled}" Focusable="True" FocusVisualStyle="{StaticResource PlaybackFocusVisualStyle}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid Width="26" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+                                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Polygon Points="0,0 2,0 2,10 0,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                <Polygon Points="10,0 4,5 10,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                <Polygon Points="18,0 12,5 18,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Grid>
+
+                                <!-- Play Music Button -->
+                                <Button Name="Play" Content="Play" Command="{Binding PlayCommand}" IsEnabled="{Binding PlayEnabled}" Visibility="{Binding PlayVisibility}" Focusable="True" FocusVisualStyle="{StaticResource PlaybackFocusVisualStyle}" ToolTip="{Binding PlayPauseToolTip}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid Width="26" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+                                                <Polygon Points="0,0 9,7 0,14" StrokeThickness="0" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <!-- Pause Music Button -->
+                                <Button Name="Pause" Content="Pause" Command="{Binding PauseCommand}" Visibility="{Binding PauseVisibility}" Focusable="True" FocusVisualStyle="{StaticResource PlaybackFocusVisualStyle}" ToolTip="{Binding PlayPauseToolTip}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid Width="26" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+                                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Polygon Points="0,0 0,13 3,13 3,0" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                    <Polygon Points="6,0 6,13 9,13 9,0" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                </Grid>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+
+                            <!-- Next Song Button -->
+                            <Button Name="Next" ToolTip="Next Track" Content="Next" Command="{Binding NextCommand}" Grid.Row="1" Grid.Column="6" IsEnabled="{Binding NextEnabled}" Focusable="True" FocusVisualStyle="{StaticResource PlaybackFocusVisualStyle}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Foreground" Value="{Binding ForegroundBrush}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter Property="Foreground" Value="{Binding FadedForegroundBrush}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid Width="26" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+                                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Polygon Points="0,0 6,5 0,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                <Polygon Points="8,0 14,5 8,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                                <Polygon Points="16,0 18,0 18,10 16,10" StrokeThickness="0" Fill="{TemplateBinding Foreground}" />
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <TextBlock Text="|" Foreground="White" Opacity="0.3" Margin="25 0 15 0" />
+        </StackPanel>
+    </Grid>
+</UserControl>
