@@ -21,7 +21,7 @@
     </UserControl.Resources>
 
 
-    <Border Background="#DD141519" CornerRadius="0 0 15 15" HorizontalAlignment="Right" VerticalAlignment="Top">
+    <Border Background="#F00E1014" BorderBrush="#33363F" BorderThickness="1,0,1,1" CornerRadius="0 0 12 12" HorizontalAlignment="Right" VerticalAlignment="Top">
         <Grid Margin="12 5 10 5" HorizontalAlignment="Right">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -37,7 +37,7 @@
                         <ProgressBar.OpacityMask>
                             <VisualBrush>
                                 <VisualBrush.Visual>
-                                    <Border Height="{Binding ActualHeight, ElementName=ProgressBar}" Width="{Binding ActualWidth, ElementName=ProgressBar}" Background="#2A2B34" BorderThickness="0" CornerRadius="9"/>
+                                    <Border Height="{Binding ActualHeight, ElementName=ProgressBar}" Width="{Binding ActualWidth, ElementName=ProgressBar}" Background="#1B1D24" BorderThickness="0" CornerRadius="9"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
                         </ProgressBar.OpacityMask>
@@ -46,7 +46,7 @@
                                 <Setter Property="Foreground" Value="{Binding SelectionBackgroundBrush}"/>
                                 <Setter Property="Background" Value="#11000000"/>
                                 <Setter Property="BorderThickness" Value="1"/>
-                                <Setter Property="BorderBrush" Value="#D0393939"/>
+                                <Setter Property="BorderBrush" Value="#D033363F"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ProgressBar}">

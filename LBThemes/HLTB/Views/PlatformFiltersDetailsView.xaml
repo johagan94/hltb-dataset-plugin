@@ -36,12 +36,16 @@
         <converter:ScaleWithResolutionConverter x:Key="ScaleConverter" SourceResolutionHeight="1440" SourceResolutionWidth="2560"/>
         <cmd:WebLinkCommand x:Key="DbLinkCommand" Mask="https://gamesdb.launchbox-app.com/games/dbid/{0}"/>
 
-        <!-- THEME COLORS -->
-        <SolidColorBrush x:Key="BackgroundColor" Color="#1F2027"/>
-        <SolidColorBrush x:Key="DarkBackground" Color="#2A2B34" />
-        <SolidColorBrush x:Key="DarkerBackground" Color="#111115" />
-        <SolidColorBrush x:Key="DarkForeground" Color="#6D6D6D"/>
-        <SolidColorBrush x:Key="LightForeground" Color="#EDEDED"/>
+        <!-- THEME COLORS (HLTB Steam-esque grayscale + Material elevation) -->
+        <SolidColorBrush x:Key="BackgroundColor"   Color="#15171C"/>
+        <SolidColorBrush x:Key="DarkBackground"    Color="#1B1D24"/>
+        <SolidColorBrush x:Key="DarkerBackground"  Color="#0E1014"/>
+        <SolidColorBrush x:Key="DarkForeground"    Color="#9A9CA3"/>
+        <SolidColorBrush x:Key="LightForeground"   Color="#E8E8E8"/>
+        <SolidColorBrush x:Key="DividerBrush"      Color="#33363F"/>
+        <SolidColorBrush x:Key="HoverSurface"      Color="#2E323D"/>
+        <SolidColorBrush x:Key="ElevatedSurface"   Color="#252832"/>
+        <SolidColorBrush x:Key="AccentBrush"       Color="#66C0F4"/>
         <Style x:Key="FocusVisualStyle">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -57,7 +61,7 @@
             <Setter Property="HasDropShadow" Value="False"/>
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-            <Setter Property="Foreground" Value="#E1E1E1"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
             <Setter Property="Background" Value="#00000000"/>
             <Setter Property="BorderBrush" Value="#00000000"/>
             <Setter Property="AllowDrop" Value="True"/>
@@ -66,8 +70,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToolTip">
-                        <Border Background="{StaticResource DarkerBackground}" CornerRadius="15">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                        <Border Background="{StaticResource DarkerBackground}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -76,7 +80,7 @@
 
     </UserControl.Resources>
     <Grid Margin="-7,0,0,0">
-        <Grid Background="#E01f2027">
+        <Grid Background="#1B1D24">
             <!-- SCROLLBAR -->
             <ScrollViewer Margin="0" Padding="0" VerticalScrollBarVisibility="Auto">
 
@@ -479,8 +483,8 @@
                                                     <Grid Width="325" MaxHeight="350" Margin="10">
                                                         <Border x:Name="PlayedLastToolTip">
                                                             <StackPanel Orientation="Vertical" Height="Auto">
-                                                                <TextBlock Text="{Binding LastPlayedPlayableGame.Title}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="18" Foreground="#E5E5E5" TextWrapping="Wrap" />
-                                                                <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Foreground="#A5A5A5">
+                                                                <TextBlock Text="{Binding LastPlayedPlayableGame.Title}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="18" Foreground="#E8E8E8" TextWrapping="Wrap" />
+                                                                <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Foreground="#9A9CA3">
                                                                     <TextBlock.Style>
                                                                         <Style TargetType="TextBlock">
                                                                             <Setter Property="Text">
@@ -529,8 +533,8 @@
                                                                     <coverFlow:FlowImage x:Name="PlayedLastPlayableScreenshot" DataContext="{Binding LastPlayedPlayableGame}" ImageType="Screenshots" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" UseImageCache="False" CreateFallbackImage="False" />
                                                                 </Grid>
                                                                 <Grid Margin="0,10,0,0">
-                                                                    <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#989898">
-                                                                        <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="12" Foreground="#A5A5A5" Margin="5">
+                                                                    <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#9A9CA3">
+                                                                        <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="12" Foreground="#9A9CA3" Margin="5">
                                                                             <TextBlock.Style>
                                                                                 <Style TargetType="TextBlock">
                                                                                     <Setter Property="Text" Value="{Binding LastPlayedPlayableGame.Rating}" />
@@ -543,7 +547,7 @@
                                                                             </TextBlock.Style>
                                                                         </TextBlock>
                                                                     </Border>
-                                                                    <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" Foreground="#A5A5A5" Margin="5,0,0,0">
+                                                                    <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" Foreground="#9A9CA3" Margin="5,0,0,0">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}{0} {1}">
                                                                                 <Binding Path="LastPlayedDate.Header" />
@@ -654,7 +658,7 @@
                                                         </coverFlow:FlowImage>
                                                     </Grid>
                                                 </Border>
-                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Background="#DD111115">
+                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Background="#DD0E1014">
                                                     <TextBlock Text="{Binding LastPlayedLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="11" Foreground="White" Margin="0 0 0 0" />
                                                 </Border>
                                             </Grid>
@@ -714,8 +718,8 @@
                                                     <Grid Width="325" MaxHeight="350" Margin="10">
                                                         <Border x:Name="MostPlayedToolTip">
                                                             <StackPanel Orientation="Vertical" Height="Auto">
-                                                                <TextBlock Text="{Binding MostPlayedGame.Title}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="18" Foreground="#E5E5E5" TextWrapping="Wrap" />
-                                                                <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Foreground="#A5A5A5">
+                                                                <TextBlock Text="{Binding MostPlayedGame.Title}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="18" Foreground="#E8E8E8" TextWrapping="Wrap" />
+                                                                <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Foreground="#9A9CA3">
                                                                     <TextBlock.Style>
                                                                         <Style TargetType="TextBlock">
                                                                             <Setter Property="Text">
@@ -764,8 +768,8 @@
                                                                     <coverFlow:FlowImage x:Name="PlayedMostToolTipScreenshot" DataContext="{Binding MostPlayedGame}" ImageType="Screenshots" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" UseImageCache="False" CreateFallbackImage="False" />
                                                                 </Grid>
                                                                 <Grid Margin="0,10,0,0">
-                                                                    <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#989898">
-                                                                        <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="12" Foreground="#A5A5A5" Margin="5">
+                                                                    <Border HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#9A9CA3">
+                                                                        <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="12" Foreground="#9A9CA3" Margin="5">
                                                                             <TextBlock.Style>
                                                                                 <Style TargetType="TextBlock">
                                                                                     <Setter Property="Text" Value="{Binding MostPlayedGame.Rating}" />
@@ -778,7 +782,7 @@
                                                                             </TextBlock.Style>
                                                                         </TextBlock>
                                                                     </Border>
-                                                                    <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" HorizontalAlignment="Right" FontSize="12" Foreground="#A5A5A5" Margin="5,0,0,0">
+                                                                    <TextBlock FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" HorizontalAlignment="Right" FontSize="12" Foreground="#9A9CA3" Margin="5,0,0,0">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}Played {0} times">
                                                                                 <Binding Path="MostPlayedGame.PlayCount" />
@@ -888,7 +892,7 @@
                                                         </coverFlow:FlowImage>
                                                     </Grid>
                                                 </Border>
-                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Background="#DD111115">
+                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Background="#DD0E1014">
                                                     <TextBlock Text="{Binding MostPlayedLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="11" Foreground="White" Margin="0 0 0 0" />
                                                 </Border>
                                             </Grid>
@@ -958,7 +962,7 @@
                                                     <RowDefinition Height="10*" />
                                                     <RowDefinition Height="3*" />
                                                 </Grid.RowDefinitions>
-                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Width="{Binding ElementName=PlayRandomGame, Path=ActualWidth}" Background="#DD111115">
+                                                <Border Grid.Row="2" CornerRadius="0,0,10,10" Width="{Binding ElementName=PlayRandomGame, Path=ActualWidth}" Background="#DD0E1014">
                                                     <TextBlock Text="{Binding RandomGameLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="11" Foreground="White" Margin="0 0 0 0" SnapsToDevicePixels="True" />
                                                 </Border>
                                             </Grid>
@@ -1084,7 +1088,7 @@
                                                                     <DataTrigger.EnterActions>
                                                                         <BeginStoryboard>
                                                                             <Storyboard>
-                                                                                <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.5" From="#e5f0f4" To="#6e787c" BeginTime="0:0:0" />
+                                                                                <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.5" From="#e5f0f4" To="#9A9CA3" BeginTime="0:0:0" />
                                                                             </Storyboard>
                                                                         </BeginStoryboard>
                                                                     </DataTrigger.EnterActions>
@@ -1455,7 +1459,7 @@
                                                                         <Thumb Margin="0,0,0,0">
                                                                             <Thumb.Template>
                                                                                 <ControlTemplate TargetType="Thumb">
-                                                                                    <Border Name="Border"  Background="#2A2B34" BorderThickness="0" CornerRadius="3" />
+                                                                                    <Border Name="Border"  Background="#1B1D24" BorderThickness="0" CornerRadius="3" />
                                                                                     <ControlTemplate.Triggers>
                                                                                         <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
                                                                                             <Setter TargetName="Border" Property="Background" Value="#555555" />
@@ -1506,7 +1510,7 @@
                             <Border Margin="0,25,0,0" MinHeight="200" Background="{StaticResource DarkBackground}" CornerRadius="25">
 
                                 <StackPanel Margin="40,25">
-                                    <TextBlock Text="{Binding InformationLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                    <TextBlock Text="{Binding InformationLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                     <ItemsControl>
                                         <ItemsControl.Style>
                                             <Style TargetType="ItemsControl">
@@ -1676,7 +1680,7 @@
                                     </Style>
                                 </Border.Style>
                                 <StackPanel Margin="40,25">
-                                    <TextBlock Text="{Binding DescriptionLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                    <TextBlock Text="{Binding DescriptionLabel, Converter={StaticResource UpperCase}}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                     <TextBlock Margin="0,25,0,0" Text="{Binding Platform.Notes, Mode=OneWay}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Foreground="{StaticResource LightForeground}" TextWrapping="Wrap"  />
                                 </StackPanel>
                             </Border>

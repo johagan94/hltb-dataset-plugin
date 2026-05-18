@@ -7,17 +7,17 @@
     <Border x:Name="Border" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="60" BorderThickness="1" CornerRadius="9">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Background" Value="#242428"/>
+                <Setter Property="Background" Value="#252832"/>
                 <Setter Property="Margin" Value="0,0,0,10"/>
-                <Setter Property="BorderBrush" Value="#7046464C"/>
+                <Setter Property="BorderBrush" Value="#7033363F"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsInTray}" Value="True">
-                        <Setter Property="Background" Value="#EF212226"/>
+                        <Setter Property="Background" Value="#EF15171C"/>
                         <Setter Property="Margin" Value="0,10,0,0"/>
-                        <Setter Property="BorderBrush" Value="#46464C"/>
+                        <Setter Property="BorderBrush" Value="#33363F"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding DateRead}" Value="{x:Null}">
-                        <Setter Property="Background" Value="#29292E"/>
+                        <Setter Property="Background" Value="#2E323D"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -53,11 +53,11 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type Button}">
                                                 <Border x:Name="Border" BorderThickness="0" Background="{TemplateBinding Background}">
-                                                    <TextBlock x:Name="Text" HorizontalAlignment="Center" Margin="6,0" VerticalAlignment="Center" Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#C0C0C1" />
+                                                    <TextBlock x:Name="Text" HorizontalAlignment="Center" Margin="6,0" VerticalAlignment="Center" Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#9A9CA3" />
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="Text" Property="Foreground" Value="#EFEFEF" />
+                                                        <Setter TargetName="Text" Property="Foreground" Value="#E8E8E8" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -86,7 +86,7 @@
                             </Style>
                         </Image.Style>
                     </Image>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Text="{Binding Message}" TextWrapping="Wrap" Foreground="#BDBDBE" FontSize="14"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Text="{Binding Message}" TextWrapping="Wrap" Foreground="#E8E8E8" FontSize="14"/>
                 </Grid>
                 <ItemsControl Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,0" HorizontalAlignment="Stretch" ItemsSource="{Binding Buttons}">
                     <ItemsControl.ItemsPanel>
@@ -97,18 +97,18 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding Command}">
-                                <TextBlock Text="{Binding Label}" FontSize="12" Foreground="#F1F1F1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Label}" FontSize="12" Foreground="#E8E8E8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 <Button.Style>
                                     <Style TargetType="Button">
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type Button}">
-                                                    <Border x:Name="Border" BorderThickness="1" Background="#2E2F31" BorderBrush="#454546" CornerRadius="3" Margin="0,12,0,0">
+                                                    <Border x:Name="Border" BorderThickness="1" Background="#252832" BorderBrush="#33363F" CornerRadius="4" Margin="0,12,0,0">
                                                         <ContentPresenter Margin="6" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     </Border>
                                                     <ControlTemplate.Triggers>
                                                         <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="Border" Property="Background" Value="#333438" />
+                                                            <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>

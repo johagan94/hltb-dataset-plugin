@@ -12,7 +12,7 @@
     d:DesignHeight="300"
     d:DesignWidth="300"
     Focusable="False"
-    Background="#802A2B34"
+    Background="#1B1D24"
     FontFamily="{Binding FontFamily}"
     FontSize="{Binding FontSize}"
     FontWeight="{Binding FontWeight}"
@@ -34,7 +34,7 @@
             <Setter Property="HasDropShadow" Value="False"/>
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-            <Setter Property="Foreground" Value="#E1E1E1"/>
+                                                    <Setter Property="Foreground" Value="#E8E8E8"/>
             <Setter Property="Background" Value="#00000000"/>
             <Setter Property="BorderBrush" Value="#00000000"/>
             <Setter Property="AllowDrop" Value="True"/>
@@ -43,8 +43,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToolTip">
-                        <Border Background="#111115" CornerRadius="15">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                        <Border Background="#0E1014" BorderBrush="#33363F" BorderThickness="1" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -115,7 +115,7 @@
                                                     <Setter Property="HasDropShadow" Value="False"/>
                                                     <Setter Property="FontSize" Value="14" />
                                                     <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-                                                    <Setter Property="Foreground" Value="#E1E1E1"/>
+                                                    <Setter Property="Foreground" Value="#E8E8E8"/>
                                                     <Setter Property="Background" Value="#00000000"/>
                                                     <Setter Property="BorderBrush" Value="#00000000"/>
                                                     <Setter Property="AllowDrop" Value="True"/>
@@ -125,8 +125,8 @@
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ToolTip">
-                                                                <Border Background="#111115" CornerRadius="15">
-                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                                                                <Border Background="#0E1014" BorderBrush="#33363F" BorderThickness="1" CornerRadius="8">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                                                                 </Border>
                                                             </ControlTemplate>
                                                         </Setter.Value>
@@ -239,7 +239,7 @@
                                         <Border.OpacityMask>
                                             <VisualBrush>
                                                 <VisualBrush.Visual>
-                                                    <Border Height="{Binding ActualHeight, ElementName=ContentImage}" Width="{Binding ActualWidth, ElementName=ContentImage}" Background="#2A2B34" BorderThickness="0" CornerRadius="10"/>
+                                                    <Border Height="{Binding ActualHeight, ElementName=ContentImage}" Width="{Binding ActualWidth, ElementName=ContentImage}" Background="#1B1D24" BorderThickness="0" CornerRadius="10"/>
                                                 </VisualBrush.Visual>
                                             </VisualBrush>
                                         </Border.OpacityMask>
@@ -260,7 +260,7 @@
                                             </Image>
                                         </Grid>
                                     </Border>
-                                    <Border x:Name="NoImgBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BoxTextOnlyVisibility}" Background="#20FFFFFF" MinHeight="175" CornerRadius="10">
+                                    <Border x:Name="NoImgBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding BoxTextOnlyVisibility}" Background="#252832" BorderBrush="#33363F" BorderThickness="1" MinHeight="175" CornerRadius="10">
                                         <TextBlock Text="{Binding Title}" Margin="12" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding ForegroundBrush}" TextWrapping="Wrap" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" SnapsToDevicePixels="True" Opacity="0.5">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -437,7 +437,7 @@
                                                             <Setter Property="HasDropShadow" Value="False"/>
                                                             <Setter Property="FontSize" Value="14" />
                                                             <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-                                                            <Setter Property="Foreground" Value="#E1E1E1"/>
+                                                            <Setter Property="Foreground" Value="#E8E8E8"/>
                                                             <Setter Property="Background" Value="#00000000"/>
                                                             <Setter Property="BorderBrush" Value="#00000000"/>
                                                             <Setter Property="AllowDrop" Value="True"/>
@@ -446,8 +446,8 @@
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="ToolTip">
-                                                                        <Border Background="#111115" CornerRadius="15">
-                                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                                                                        <Border Background="#0E1014" BorderBrush="#33363F" BorderThickness="1" CornerRadius="8">
+                                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                                                                         </Border>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
@@ -473,10 +473,10 @@
                                     TextAlignment="Left" FontSize="12" TextTrimming="CharacterEllipsis" SnapsToDevicePixels="True">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="#888888" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                        <Setter Property="Foreground" Value="#BBBBBB"/>
+                                    <Setter Property="Foreground" Value="#9A9CA3" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Foreground" Value="#DEDEDE"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

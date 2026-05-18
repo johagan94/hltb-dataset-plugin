@@ -43,7 +43,7 @@
             <Setter Property="HasDropShadow" Value="False"/>
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-            <Setter Property="Foreground" Value="#E1E1E1"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
             <Setter Property="Background" Value="#00000000"/>
             <Setter Property="BorderBrush" Value="#00000000"/>
             <Setter Property="AllowDrop" Value="True"/>
@@ -52,8 +52,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToolTip">
-                        <Border Background="#111115" CornerRadius="15">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                        <Border Background="#0E1014" CornerRadius="8" BorderBrush="#33363F" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -181,7 +181,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="Grid" Background="#E01f2027">
+    <Grid x:Name="Grid" Background="#15171C">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
@@ -283,7 +283,7 @@
                 </Path>
             </Button>
         </Grid>
-        <Border Grid.Row="3" Grid.RowSpan="2" Background="#111115" CornerRadius="4" Margin="20,-20,59,0" Panel.ZIndex="15">
+        <Border Grid.Row="3" Grid.RowSpan="2" Background="#0E1014" BorderBrush="#33363F" BorderThickness="1" CornerRadius="4" Margin="20,-20,59,0" Panel.ZIndex="15">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -326,10 +326,10 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Margin="0,14,0,0" Height="1" Fill="#33FFFFFF" VerticalAlignment="Top" />
-                <TextBlock x:Name="SearchHint" Text="{Binding StartTypingToSearchLabel}" TextWrapping="Wrap" FontStyle="Italic" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.5" />
-                <TextBlock Grid.Row="1" Margin="0,28,5,0" Text="{Binding Converter={StaticResource UpperCase}, Path=AdvancedSearchOptionsLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.8" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="2" Margin="0,15,0,0" Text="{Binding AdvancedSearchOptionsListLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.8" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="3" Margin="0,15,0,0" Text="{Binding AdvancedSearchOptionsExampleLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.5" TextWrapping="Wrap"/>
+                <TextBlock x:Name="SearchHint" Text="{Binding StartTypingToSearchLabel}" TextWrapping="Wrap" FontStyle="Italic" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.7" />
+                <TextBlock Grid.Row="1" Margin="0,28,5,0" Text="{Binding Converter={StaticResource UpperCase}, Path=AdvancedSearchOptionsLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.87" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="2" Margin="0,15,0,0" Text="{Binding AdvancedSearchOptionsListLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.87" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="3" Margin="0,15,0,0" Text="{Binding AdvancedSearchOptionsExampleLabel}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" FontSize="14" Opacity="0.6" TextWrapping="Wrap"/>
                 <Button x:Name="QuestionMark" Grid.Row="1" Grid.Column="1" Margin="0,28,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Command="{Binding AdvancedSearchHelpCommand}" FocusVisualStyle="{StaticResource FocusVisualStyle}">
                     <Button.Style>
                         <Style TargetType="Button">
@@ -439,7 +439,7 @@
                                         Focusable="False" PopupAnimation="Slide">
                                         <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}"
                                             MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                            <Border x:Name="DropDownBorder" Background="#F7111111">
+                                            <Border x:Name="DropDownBorder" Background="#F50E1014" BorderBrush="#33363F" BorderThickness="1">
                                                 <ScrollViewer Margin="0" SnapsToDevicePixels="True">
                                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                                     <ScrollViewer.Resources>

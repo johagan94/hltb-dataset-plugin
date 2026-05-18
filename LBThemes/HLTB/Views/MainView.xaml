@@ -46,7 +46,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MinWidth="600" Background="#2A2B34">
+    <Grid MinWidth="600" Background="#1B1D24">
         <Grid.Resources>
             <local:DoubleGridLengthConverter x:Key="DoubleGridLengthConverter" />
         </Grid.Resources>
@@ -78,7 +78,7 @@
         </Grid.RowDefinitions>
         <transitions:TransitionPresenter x:Name="ContentBackgroundViewModel" Grid.RowSpan="2" Grid.ColumnSpan="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Focusable="False" 
             TransitionSelector="{Binding ContentBackgroundTransitionSelector}" Content="{Binding ContentBackgroundView}" />
-        <Rectangle Stretch="Fill" Fill="#2A2B34" Grid.RowSpan="2" Grid.ColumnSpan="5" Opacity="{Binding Converter={StaticResource MultiplyByConverter}, ConverterParameter='0.003921568627451', Path=BackgroundFadeBrush.Color.A}" Focusable="False" />
+        <Rectangle Stretch="Fill" Fill="#1B1D24" Grid.RowSpan="2" Grid.ColumnSpan="5" Opacity="{Binding Converter={StaticResource MultiplyByConverter}, ConverterParameter='0.003921568627451', Path=BackgroundFadeBrush.Color.A}" Focusable="False" />
         <!-- Caching Progress Bar -->
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Height="3" Panel.ZIndex="99" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding ProcessingVisibility}">
             <Grid.ColumnDefinitions>
@@ -92,12 +92,12 @@
         <ContentControl x:Name="SideBarViewModel" Grid.Column="0" Grid.Row="1" Focusable="False" Visibility="{Binding SideBarVisibility}" SnapsToDevicePixels="True" />
 
         <!-- Side Bar Splitter -->
-        <GridSplitter Background="#E01f2027" Grid.Column="1" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" Visibility="{Binding SideBarVisibility}" SnapsToDevicePixels="True" />
+        <GridSplitter Background="#E015171C" Grid.Column="1" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Focusable="True" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" Visibility="{Binding SideBarVisibility}" SnapsToDevicePixels="True" />
 
         <!-- Main Content -->
         <transitions:TransitionPresenter TransitionSelector="{Binding ContentTransitionSelector}" Content="{Binding ContentView}" Grid.Column="2" Grid.Row="1" Focusable="False" SnapsToDevicePixels="True" />
 
-        <GridSplitter Grid.Column="3" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Panel.ZIndex="100" Focusable="True" Background="#E01f2027" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" SnapsToDevicePixels="True" Visibility="{Binding GameDetailsVisibility}">
+        <GridSplitter Grid.Column="3" Grid.Row="1" Style="{StaticResource GridSplitterStyle}" Panel.ZIndex="100" Focusable="True" Background="#E015171C" FocusVisualStyle="{StaticResource ResourceKey=FocusVisualStyle}" SnapsToDevicePixels="True" Visibility="{Binding GameDetailsVisibility}">
             <GridSplitter.Template>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
                     <Border Background="Transparent" />
@@ -114,7 +114,7 @@
 
 
         <!-- Top Bar -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#232429" SnapsToDevicePixels="True">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#15171C" SnapsToDevicePixels="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"/>
@@ -328,9 +328,9 @@
                                                     </Path.Effect>
                                                 </Path>
                                                 <Grid x:Name="GridNotification" Opacity="0">
-                                                    <Border x:Name="Border" Height="12" Width="12" CornerRadius="6" Opacity="0" BorderThickness="1" BorderBrush="#232429" Background="#30DB72" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
+                                                    <Border x:Name="Border" Height="12" Width="12" CornerRadius="6" Opacity="0" BorderThickness="1" BorderBrush="#15171C" Background="#30DB72" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
                                                         <Viewbox Margin="-1,0,0,0">
-                                                            <TextBlock Text="{Binding ElementName=Notifications, Path=UnreadNotifications}" FontWeight="Bold" Foreground="#232429" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                            <TextBlock Text="{Binding ElementName=Notifications, Path=UnreadNotifications}" FontWeight="Bold" Foreground="#15171C" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                         </Viewbox>
                                                     </Border>
                                                 </Grid>

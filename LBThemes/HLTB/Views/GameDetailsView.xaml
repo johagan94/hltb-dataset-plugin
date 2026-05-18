@@ -39,12 +39,16 @@
         <converter:ScaleWithResolutionConverter x:Key="ScaleConverter" SourceResolutionHeight="1440" SourceResolutionWidth="2560"/>
         <cmd:WebLinkCommand x:Key="DbLinkCommand" Mask="https://gamesdb.launchbox-app.com/games/dbid/{0}"/>
 
-        <!-- THEME COLORS -->
-        <SolidColorBrush x:Key="BackgroundColor" Color="#1F2027"/>
-        <SolidColorBrush x:Key="DarkBackground" Color="#2A2B34" />
-        <SolidColorBrush x:Key="DarkerBackground" Color="#111115" />
-        <SolidColorBrush x:Key="DarkForeground" Color="#6D6D6D"/>
-        <SolidColorBrush x:Key="LightForeground" Color="#EDEDED"/>
+        <!-- THEME COLORS (HLTB Steam-esque grayscale + Material elevation) -->
+        <SolidColorBrush x:Key="BackgroundColor"   Color="#15171C"/>  <!-- base surface -->
+        <SolidColorBrush x:Key="DarkBackground"    Color="#1B1D24"/>  <!-- elevated surface (window) -->
+        <SolidColorBrush x:Key="DarkerBackground"  Color="#0E1014"/>  <!-- tooltip / popup -->
+        <SolidColorBrush x:Key="DarkForeground"    Color="#9A9CA3"/>  <!-- medium-emphasis text (60%) -->
+        <SolidColorBrush x:Key="LightForeground"   Color="#E8E8E8"/>  <!-- high-emphasis text (87%) -->
+        <SolidColorBrush x:Key="DividerBrush"      Color="#33363F"/>  <!-- borders / dividers -->
+        <SolidColorBrush x:Key="HoverSurface"      Color="#2E323D"/>  <!-- interactive hover -->
+        <SolidColorBrush x:Key="ElevatedSurface"   Color="#252832"/>  <!-- cards -->
+        <SolidColorBrush x:Key="AccentBrush"       Color="#66C0F4"/>  <!-- subtle Steam-blue accent -->
 
         <Style x:Key="FocusVisualStyle">
             <Setter Property="Control.Template">
@@ -61,7 +65,7 @@
             <Setter Property="HasDropShadow" Value="False"/>
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" />
-            <Setter Property="Foreground" Value="#E1E1E1"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
             <Setter Property="Background" Value="#00000000"/>
             <Setter Property="BorderBrush" Value="#00000000"/>
             <Setter Property="AllowDrop" Value="True"/>
@@ -71,8 +75,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToolTip">
-                        <Border Background="{StaticResource DarkerBackground}" CornerRadius="15">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Margin="10 5 10 5" />
+                        <Border Background="{StaticResource DarkerBackground}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.87" Margin="10 5 10 5" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -82,7 +86,7 @@
 
     </UserControl.Resources>
     <Grid Margin="-7,0,0,0">
-        <Grid Margin="0 0 0 0" Background="#E01f2027">
+        <Grid Margin="0 0 0 0" Background="#1B1D24">
 
             <!-- SCROLLBAR -->
             <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -1152,7 +1156,7 @@
                                                 <Setter TargetName="Border" Property="BorderBrush" Value="{Binding Path=DataContext.SelectionBackgroundBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="False">
-                                                <Setter TargetName="Text" Property="Foreground" Value="#EAEAEA" />
+                                                <Setter TargetName="Text" Property="Foreground" Value="#E8E8E8" />
                                                 <Setter TargetName="Text" Property="Opacity" Value="0.6" />
                                             </Trigger>
                                             <MultiTrigger>
@@ -1602,7 +1606,7 @@
                                                                                     </DataTrigger.ExitActions>
                                                                                 </DataTrigger>
                                                                                 <DataTrigger Binding="{Binding Game.InstallState}" Value="Installing">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#363743" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3183E1"/>
                                                                                     <Setter TargetName="Border" Property="Effect">
@@ -1634,7 +1638,7 @@
                                                                                     </DataTrigger.ExitActions>
                                                                                 </DataTrigger>
                                                                                 <DataTrigger Binding="{Binding Game.InstallState}" Value="Updating">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#363743" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3183E1"/>
                                                                                     <Setter TargetName="Border" Property="Effect">
@@ -1666,7 +1670,7 @@
                                                                                     </DataTrigger.ExitActions>
                                                                                 </DataTrigger>
                                                                                 <DataTrigger Binding="{Binding Game.InstallState}" Value="InstallPaused">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#363743" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3183E1"/>
                                                                                     <Setter TargetName="Border" Property="Effect">
@@ -1676,7 +1680,7 @@
                                                                                     </Setter>
                                                                                 </DataTrigger>
                                                                                 <DataTrigger Binding="{Binding Game.InstallState}" Value="UpdatePaused">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#363743" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3183E1"/>
                                                                                     <Setter TargetName="Border" Property="Effect">
@@ -1686,7 +1690,7 @@
                                                                                     </Setter>
                                                                                 </DataTrigger>
                                                                                 <DataTrigger Binding="{Binding Game.InstallState}" Value="Uninstalling">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#363743" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#2E323D" />
                                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                                                                     <Setter TargetName="Border" Property="BorderBrush" Value="#3183E1"/>
                                                                                     <Setter TargetName="Border" Property="Effect">
@@ -2235,7 +2239,7 @@
                                                                                 <DataTrigger.EnterActions>
                                                                                     <BeginStoryboard>
                                                                                         <Storyboard>
-                                                                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.5" From="#EDEDED" To="#6D6D6D" BeginTime="0:0:0" />
+                                                                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Duration="0:0:0.5" From="#E8E8E8" To="#9A9CA3" BeginTime="0:0:0" />
                                                                                         </Storyboard>
                                                                                     </BeginStoryboard>
                                                                                 </DataTrigger.EnterActions>
@@ -2645,10 +2649,10 @@
                                                                                     <Thumb Margin="0,0,0,0">
                                                                                         <Thumb.Template>
                                                                                             <ControlTemplate TargetType="Thumb">
-                                                                                                <Border Name="Border"  Background="#2A2B34" BorderThickness="0" CornerRadius="3" />
+                                                                                                <Border Name="Border"  Background="#1B1D24" BorderThickness="0" CornerRadius="3" />
                                                                                                 <ControlTemplate.Triggers>
                                                                                                     <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                                                                        <Setter TargetName="Border" Property="Background" Value="#555555" />
+                                                                                                        <Setter TargetName="Border" Property="Background" Value="#5C5F69" />
                                                                                                     </Trigger>
                                                                                                 </ControlTemplate.Triggers>
                                                                                             </ControlTemplate>
@@ -2702,7 +2706,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding InformationLabel, Converter={StaticResource UpperCase}}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                                    <TextBlock Text="{Binding InformationLabel, Converter={StaticResource UpperCase}}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                                                         <TextBlock VerticalAlignment="Center" Margin="0,0,0,0">
                                                             <TextBlock.Style>
@@ -3023,14 +3027,14 @@
                                         <!-- DESCRIPTION -->
                                         <Border Margin="0,25,0,0" MinHeight="200" Background="{StaticResource DarkBackground}" CornerRadius="25" Visibility="{Binding NotesVisibility}">
                                             <StackPanel Margin="40,25">
-                                                <TextBlock Text="{Binding DescriptionLabel, Converter={StaticResource UpperCase}}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                                <TextBlock Text="{Binding DescriptionLabel, Converter={StaticResource UpperCase}}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                                 <TextBlock Margin="0,25,0,0" Text="{Binding Notes, Mode=OneWay}" Foreground="{StaticResource LightForeground}" TextWrapping="Wrap"  />
                                             </StackPanel>
                                         </Border>
 
                                         <Border Margin="0,25,0,0" Background="{StaticResource DarkBackground}" CornerRadius="25" Visibility="{Binding TimeToBeatVisibility}">
                                             <StackPanel Margin="35,25,35,25">
-                                                <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=PlaytimeCommitmentLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                                <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=PlaytimeCommitmentLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                                 
                                                 <Grid Margin="0,25,0,0">
                                                     <Grid.ColumnDefinitions>
@@ -3046,7 +3050,7 @@
                                                             </ToolTip>
                                                         </Border.ToolTip>
                                                         <StackPanel HorizontalAlignment="Center">
-                                                            <Path Width="28" Height="28" Stretch="Uniform" Fill="#A7A7AB" HorizontalAlignment="Center" Margin="0,0,0,12" Data="M5.33301 0.708008C6.45363 0.708008 7.38278 1.07978 8.19629 1.40527L8.23242 1.41992C9.07687 1.7577 9.80422 2.04199 10.667 2.04199C11.5962 2.04194 12.1828 1.88685 12.5176 1.75293C12.6853 1.68583 12.7926 1.6226 12.8506 1.58398C12.8797 1.56461 12.8971 1.551 12.9033 1.5459C13.0819 1.37734 13.3443 1.32844 13.5723 1.42285C13.8058 1.51959 13.958 1.74723 13.958 2V10C13.958 10.1658 13.8926 10.3252 13.7754 10.4424L13.7734 10.4434L13.7627 10.4541L13.7461 10.4697C13.7334 10.4813 13.7171 10.4952 13.6982 10.5107C13.6602 10.542 13.6094 10.581 13.5449 10.624C13.4154 10.7104 13.231 10.8146 12.9824 10.9141C12.484 11.1134 11.7372 11.2919 10.667 11.292C9.54612 11.292 8.61637 10.9203 7.80273 10.5947L7.76758 10.5801C6.92302 10.2423 6.19587 9.95801 5.33301 9.95801C4.4039 9.95803 3.81733 10.1132 3.48242 10.2471C3.4073 10.2771 3.34389 10.3064 3.29199 10.333V14.667C3.29182 15.0119 3.01184 15.2917 2.66699 15.292C2.32192 15.292 2.04119 15.012 2.04102 14.667V2C2.04103 1.83425 2.10741 1.67482 2.22461 1.55762L2.22559 1.55664L2.22754 1.55566L2.2373 1.5459L2.25391 1.53027C2.26669 1.51865 2.28279 1.50488 2.30176 1.48926C2.3398 1.45793 2.39047 1.41905 2.45508 1.37598C2.58467 1.28958 2.7689 1.18541 3.01758 1.08594C3.51602 0.886568 4.26268 0.708026 5.33301 0.708008Z" />
+                                                            <Path Width="28" Height="28" Stretch="Uniform" Fill="#9A9CA3" HorizontalAlignment="Center" Margin="0,0,0,12" Data="M5.33301 0.708008C6.45363 0.708008 7.38278 1.07978 8.19629 1.40527L8.23242 1.41992C9.07687 1.7577 9.80422 2.04199 10.667 2.04199C11.5962 2.04194 12.1828 1.88685 12.5176 1.75293C12.6853 1.68583 12.7926 1.6226 12.8506 1.58398C12.8797 1.56461 12.8971 1.551 12.9033 1.5459C13.0819 1.37734 13.3443 1.32844 13.5723 1.42285C13.8058 1.51959 13.958 1.74723 13.958 2V10C13.958 10.1658 13.8926 10.3252 13.7754 10.4424L13.7734 10.4434L13.7627 10.4541L13.7461 10.4697C13.7334 10.4813 13.7171 10.4952 13.6982 10.5107C13.6602 10.542 13.6094 10.581 13.5449 10.624C13.4154 10.7104 13.231 10.8146 12.9824 10.9141C12.484 11.1134 11.7372 11.2919 10.667 11.292C9.54612 11.292 8.61637 10.9203 7.80273 10.5947L7.76758 10.5801C6.92302 10.2423 6.19587 9.95801 5.33301 9.95801C4.4039 9.95803 3.81733 10.1132 3.48242 10.2471C3.4073 10.2771 3.34389 10.3064 3.29199 10.333V14.667C3.29182 15.0119 3.01184 15.2917 2.66699 15.292C2.32192 15.292 2.04119 15.012 2.04102 14.667V2C2.04103 1.83425 2.10741 1.67482 2.22461 1.55762L2.22559 1.55664L2.22754 1.55566L2.2373 1.5459L2.25391 1.53027C2.26669 1.51865 2.28279 1.50488 2.30176 1.48926C2.3398 1.45793 2.39047 1.41905 2.45508 1.37598C2.58467 1.28958 2.7689 1.18541 3.01758 1.08594C3.51602 0.886568 4.26268 0.708026 5.33301 0.708008Z" />
                                                             <TextBlock Text="{Binding BeatTheGameLabel}" Foreground="#999" HorizontalAlignment="Center" Margin="0,0,0,5" />
                                                             <TextBlock Text="{Binding MedianTimeToBeatHardcore}" Foreground="White" FontSize="24" HorizontalAlignment="Center" />
                                                         </StackPanel>
@@ -3059,7 +3063,7 @@
                                                             </ToolTip>
                                                         </Border.ToolTip>
                                                         <StackPanel HorizontalAlignment="Center">
-                                                            <Path Width="28" Height="28" Stretch="Uniform" Fill="#A7A7AB" HorizontalAlignment="Center" Margin="0,0,0,12" Data="M 8 1.3476562 C 7.8293802 1.3476563 7.6625249 1.395602 7.515625 1.4824219 C 7.3689951 1.5691318 7.2482655 1.692617 7.1660156 1.8417969 L 5.1953125 5.6210938 C 5.1921325 5.6263637 5.1866106 5.6311056 5.1816406 5.6347656 C 5.1761606 5.6387856 5.1707125 5.639295 5.1640625 5.640625 C 5.1573625 5.641925 5.1491981 5.642285 5.1425781 5.640625 C 5.1366881 5.639125 5.1318231 5.6383856 5.1269531 5.6347656 L 2.2832031 3.1972656 L 2.2695312 3.1855469 C 2.1130014 3.058267 1.9202098 2.9833662 1.71875 2.9726562 C 1.5173102 2.9619863 1.3175573 3.0169632 1.1484375 3.1269531 C 0.97939267 3.236943 0.84924868 3.3975077 0.77734375 3.5859375 C 0.70544682 3.7744073 0.69519193 3.9811114 0.74804688 4.1757812 L 2.6386719 11.009766 C 2.7131918 11.279365 2.8737833 11.515247 3.0957031 11.685547 C 3.3179329 11.856047 3.5890709 11.951225 3.8691406 11.953125 L 12.132812 11.953125 C 12.412612 11.950925 12.68425 11.855947 12.90625 11.685547 C 13.12805 11.515247 13.288781 11.277412 13.363281 11.007812 L 15.251953 4.1777344 L 15.251953 4.1738281 C 15.304653 3.9792983 15.294356 3.7742873 15.222656 3.5859375 C 15.150656 3.3973977 15.020662 3.236963 14.851562 3.1269531 C 14.682463 3.0171032 14.48255 2.9619563 14.28125 2.9726562 C 14.07985 2.9834562 13.886869 3.058317 13.730469 3.1855469 L 13.71875 3.1972656 L 10.875 5.6328125 C 10.8701 5.6364725 10.863422 5.639105 10.857422 5.640625 C 10.850822 5.642315 10.844691 5.641935 10.837891 5.640625 C 10.831191 5.639305 10.823859 5.6368725 10.818359 5.6328125 C 10.813359 5.6291725 10.809741 5.6243906 10.806641 5.6191406 L 8.8417969 1.8535156 L 8.8359375 1.8417969 C 8.7536976 1.692437 8.633078 1.5692218 8.4863281 1.4824219 C 8.3394383 1.395612 8.1706198 1.3476662 8 1.3476562 z M 3.3339844 13.375 C 2.9888047 13.375 2.7089844 13.6548 2.7089844 14 C 2.7089844 14.3452 2.9888047 14.625 3.3339844 14.625 L 12.667969 14.625 C 13.013168 14.625 13.292969 14.3452 13.292969 14 C 13.292969 13.6548 13.013168 13.375 12.667969 13.375 L 3.3339844 13.375 z" />
+                                                            <Path Width="28" Height="28" Stretch="Uniform" Fill="#9A9CA3" HorizontalAlignment="Center" Margin="0,0,0,12" Data="M 8 1.3476562 C 7.8293802 1.3476563 7.6625249 1.395602 7.515625 1.4824219 C 7.3689951 1.5691318 7.2482655 1.692617 7.1660156 1.8417969 L 5.1953125 5.6210938 C 5.1921325 5.6263637 5.1866106 5.6311056 5.1816406 5.6347656 C 5.1761606 5.6387856 5.1707125 5.639295 5.1640625 5.640625 C 5.1573625 5.641925 5.1491981 5.642285 5.1425781 5.640625 C 5.1366881 5.639125 5.1318231 5.6383856 5.1269531 5.6347656 L 2.2832031 3.1972656 L 2.2695312 3.1855469 C 2.1130014 3.058267 1.9202098 2.9833662 1.71875 2.9726562 C 1.5173102 2.9619863 1.3175573 3.0169632 1.1484375 3.1269531 C 0.97939267 3.236943 0.84924868 3.3975077 0.77734375 3.5859375 C 0.70544682 3.7744073 0.69519193 3.9811114 0.74804688 4.1757812 L 2.6386719 11.009766 C 2.7131918 11.279365 2.8737833 11.515247 3.0957031 11.685547 C 3.3179329 11.856047 3.5890709 11.951225 3.8691406 11.953125 L 12.132812 11.953125 C 12.412612 11.950925 12.68425 11.855947 12.90625 11.685547 C 13.12805 11.515247 13.288781 11.277412 13.363281 11.007812 L 15.251953 4.1777344 L 15.251953 4.1738281 C 15.304653 3.9792983 15.294356 3.7742873 15.222656 3.5859375 C 15.150656 3.3973977 15.020662 3.236963 14.851562 3.1269531 C 14.682463 3.0171032 14.48255 2.9619563 14.28125 2.9726562 C 14.07985 2.9834562 13.886869 3.058317 13.730469 3.1855469 L 13.71875 3.1972656 L 10.875 5.6328125 C 10.8701 5.6364725 10.863422 5.639105 10.857422 5.640625 C 10.850822 5.642315 10.844691 5.641935 10.837891 5.640625 C 10.831191 5.639305 10.823859 5.6368725 10.818359 5.6328125 C 10.813359 5.6291725 10.809741 5.6243906 10.806641 5.6191406 L 8.8417969 1.8535156 L 8.8359375 1.8417969 C 8.7536976 1.692437 8.633078 1.5692218 8.4863281 1.4824219 C 8.3394383 1.395612 8.1706198 1.3476662 8 1.3476562 z M 3.3339844 13.375 C 2.9888047 13.375 2.7089844 13.6548 2.7089844 14 C 2.7089844 14.3452 2.9888047 14.625 3.3339844 14.625 L 12.667969 14.625 C 13.013168 14.625 13.292969 14.3452 13.292969 14 C 13.292969 13.6548 13.013168 13.375 12.667969 13.375 L 3.3339844 13.375 z" />
                                                             <TextBlock Text="{Binding MasteredLabel}" Foreground="#999" HorizontalAlignment="Center" Margin="0,0,0,5" />
                                                             <TextBlock Text="{Binding MedianTimeToMaster}" Foreground="White" FontSize="24" HorizontalAlignment="Center" />
                                                         </StackPanel>
@@ -3072,7 +3076,7 @@
                                         <!-- HLTB TIME DATA -->
                                         <Border Margin="0,25,0,0" Background="{StaticResource DarkBackground}" CornerRadius="25" Visibility="{Binding Title, Converter={StaticResource HltbHasData}}">
                                             <StackPanel Margin="35,25,35,25">
-                                                <TextBlock Text="HOW LONG TO BEAT" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80" />
+                                                <TextBlock Text="HOW LONG TO BEAT" FontFamily="{Binding TitleFontFamily}" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3" />
                                                 <Grid Margin="0,25,0,0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*" />
@@ -3083,21 +3087,21 @@
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Background="{StaticResource BackgroundColor}" CornerRadius="10" Padding="10">
                                                         <StackPanel HorizontalAlignment="Center">
-                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#A7A7AB" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M18,2H6C4.9,2 4,2.9 4,4V20C4,21.1 4.9,22 6,22H18C19.1,22 20,21.1 20,20V4C20,2.9 19.1,2 18,2M18,20H6V4H7V12L10,9.5L13,12V4H18V20Z" />
+                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#9A9CA3" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M18,2H6C4.9,2 4,2.9 4,4V20C4,21.1 4.9,22 6,22H18C19.1,22 20,21.1 20,20V4C20,2.9 19.1,2 18,2M18,20H6V4H7V12L10,9.5L13,12V4H18V20Z" />
                                                             <TextBlock Text="MAIN STORY" Foreground="#999" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="10" TextWrapping="NoWrap" />
                                                             <TextBlock Text="{Binding Title, Converter={StaticResource HltbField}, ConverterParameter='HLTB Main Story'}" Foreground="White" FontSize="18" HorizontalAlignment="Center" />
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Column="2" Background="{StaticResource BackgroundColor}" CornerRadius="10" Padding="10">
                                                         <StackPanel HorizontalAlignment="Center">
-                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#A7A7AB" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M3,5H21V7H3V5M3,11H21V13H3V11M3,17H15V19H3V17M19,15V19H17V21H19V23H21V21H23V19H21V15H19Z" />
+                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#9A9CA3" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M3,5H21V7H3V5M3,11H21V13H3V11M3,17H15V19H3V17M19,15V19H17V21H19V23H21V21H23V19H21V15H19Z" />
                                                             <TextBlock Text="MAIN + EXTRAS" Foreground="#999" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="10" TextWrapping="NoWrap" />
                                                             <TextBlock Text="{Binding Title, Converter={StaticResource HltbField}, ConverterParameter='HLTB Main + Extras'}" Foreground="White" FontSize="18" HorizontalAlignment="Center" />
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Column="4" Background="{StaticResource BackgroundColor}" CornerRadius="10" Padding="10">
                                                         <StackPanel HorizontalAlignment="Center">
-                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#A7A7AB" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M7,2H17V4H20V8C20,10.21 18.21,12 16,12C15.74,12 15.46,11.97 15.21,11.92C14.42,13.21 13.32,14.14 12,14.7V18H15V20H9V18H12V14.7C10.68,14.14 9.58,13.21 8.79,11.92C8.54,11.97 8.26,12 8,12C5.79,12 4,10.21 4,8V4H7V2M5,5V8C5,9.66 6.34,11 8,11C8.04,11 8.08,11 8.12,11C7.41,9.7 7,8.39 7,7V5H5M17,5V7C17,8.39 16.59,9.7 15.88,11C15.92,11 15.96,11 16,11C17.66,11 19,9.66 19,8V5H17Z" />
+                                                            <Path Width="24" Height="24" Stretch="Uniform" Fill="#9A9CA3" HorizontalAlignment="Center" Margin="0,0,0,10" Data="M7,2H17V4H20V8C20,10.21 18.21,12 16,12C15.74,12 15.46,11.97 15.21,11.92C14.42,13.21 13.32,14.14 12,14.7V18H15V20H9V18H12V14.7C10.68,14.14 9.58,13.21 8.79,11.92C8.54,11.97 8.26,12 8,12C5.79,12 4,10.21 4,8V4H7V2M5,5V8C5,9.66 6.34,11 8,11C8.04,11 8.08,11 8.12,11C7.41,9.7 7,8.39 7,7V5H5M17,5V7C17,8.39 16.59,9.7 15.88,11C15.92,11 15.96,11 16,11C17.66,11 19,9.66 19,8V5H17Z" />
                                                             <TextBlock Text="COMPLETIONIST" Foreground="#999" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="10" TextWrapping="NoWrap" />
                                                             <TextBlock Text="{Binding Title, Converter={StaticResource HltbField}, ConverterParameter='HLTB Completionist'}" Foreground="White" FontSize="18" HorizontalAlignment="Center" />
                                                         </StackPanel>
@@ -3121,7 +3125,7 @@
                                             </Border.Style>
                                             <StackPanel Margin="35,25,35,10">
 
-                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.RetroAchievements.Count, Mode=OneWay, StringFormat='{}RETRO ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.RetroAchievements.Count, Mode=OneWay, StringFormat='{}RETRO ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3"/>
 
                                                 <StackPanel Orientation="Vertical" Margin="6,15">
                                                     <StackPanel.Style>
@@ -3188,8 +3192,8 @@
                                                                                         <ColumnDefinition Width="Auto"/>
                                                                                     </Grid.ColumnDefinitions>
                                                                                     <TextBlock Margin="0,3" Text="{Binding Name}" Foreground="#E6E6E6" FontWeight="Bold" />
-                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#D6D6D6" TextWrapping="Wrap"/>
-                                                                                    <TextBlock Grid.Row="2" Margin="0,4" Foreground="#D6D6D6" FontStyle="Italic" Text="{Binding UnlockedString}">
+                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#DEDEDE" TextWrapping="Wrap"/>
+                                                                                    <TextBlock Grid.Row="2" Margin="0,4" Foreground="#DEDEDE" FontStyle="Italic" Text="{Binding UnlockedString}">
                                                                                         <TextBlock.Style>
                                                                                             <Style TargetType="{x:Type TextBlock}">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -3201,7 +3205,7 @@
                                                                                             </Style>
                                                                                         </TextBlock.Style>
                                                                                     </TextBlock>
-                                                                                    <Border Margin="0,-4,0,0" Padding="8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                    <Border Margin="0,-4,0,0" Padding="8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                         <Border.Style>
                                                                                             <Style TargetType="Border">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -3214,7 +3218,7 @@
                                                                                         </Border.Style>
                                                                                         <Path Stroke="White" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Height="16" Width="16" Stretch="Uniform" Data="M9.19306,1.4364 C12.3075,1.99877 14.6701,4.72349 14.6701,8.00002 C14.6701,11.2765 12.3075,14.0013 9.19306,14.5636 M4.22555,2.5 C4.98692,1.97649 5.86241,1.60698 6.80709,1.4364 M6.80709,14.5636 C5.86241,14.3931 4.98692,14.0235 4.22555,13.5 M1.44606,6.75503 C1.62066,5.83026 1.98614,4.97294 2.49999,4.22558 M2.49999,11.7745 C1.98614,11.0271 1.62066,10.1698 1.44606,9.245 M5.69404,7.73683 L7.27132,9.31396 L10.2265,6.35876"/>
                                                                                     </Border>
-                                                                                    <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                    <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                         <Border.Style>
                                                                                             <Style TargetType="Border">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -3227,7 +3231,7 @@
                                                                                         </Border.Style>
                                                                                         <Path Fill="White" Height="16" Width="10" Stretch="Uniform" Data="m 5,0.70507812 c -0.3451797,0 -0.625,0.27982035 -0.625,0.62499998 v 2.2695313 c 0,0.3451696 0.2798203,0.625 0.625,0.625 0.3451797,0 0.625,-0.2798304 0.625,-0.625 V 1.3300781 C 5.625,0.98489847 5.3451797,0.70507813 5,0.70507812 Z m 3.4003906,0 c -0.3451793,10e-9 -0.625,0.2798207 -0.625,0.62499998 v 4.9882813 c 0,0.3451793 0.2798207,0.625 0.625,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499998 -0.625,-0.62499998 z M 5,6.2519531 c -0.2304695,0 -0.4420115,0.1268886 -0.5507813,0.3300781 L 3.2421875,8.8359375 0.609375,9.234375 C 0.37368147,9.2701049 0.17919773,9.436733 0.10742187,9.6640625 0.03564672,9.891382 0.09904352,10.140088 0.27148438,10.304688 l 1.86718752,1.78125 -0.4101563,2.480468 c -0.03813,0.2305 0.055058,0.461863 0.2421875,0.601563 0.1871397,0.139799 0.4363148,0.1644 0.6464844,0.0625 L 5,14.074219 l 2.3828125,1.15625 c 0.2101796,0.1019 0.4593547,0.0773 0.6464844,-0.0625 0.1871296,-0.1397 0.2803174,-0.371063 0.2421875,-0.601563 L 7.8613281,12.085938 9.7285156,10.304688 C 9.9009553,10.140088 9.964348,9.891382 9.8925781,9.6640625 9.8207983,9.436733 9.6263145,9.2701049 9.390625,9.234375 L 6.7578125,8.8359375 5.5507812,6.5820312 C 5.4420115,6.3788417 5.2304695,6.2519531 5,6.2519531 Z M 1.5996094,0.70507812 c -0.3451793,0 -0.62500003,0.2798207 -0.62500002,0.62499998 v 4.9882813 c 0,0.3451793 0.27982072,0.625 0.62500002,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499997 -0.625,-0.62499998 z"/>
                                                                                     </Border>
-                                                                                    <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                    <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                         <Border.Style>
                                                                                             <Style TargetType="Border">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -3349,10 +3353,10 @@
                                                                                     <Thumb>
                                                                                         <Thumb.Template>
                                                                                             <ControlTemplate TargetType="Thumb">
-                                                                                                <Border Name="Border" Background="#45464D" BorderThickness="0" CornerRadius="3" />
+                                                                                                <Border Name="Border" Background="#33363F" BorderThickness="0" CornerRadius="3" />
                                                                                                 <ControlTemplate.Triggers>
                                                                                                     <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                                                                        <Setter TargetName="Border" Property="Background" Value="#555555" />
+                                                                                                        <Setter TargetName="Border" Property="Background" Value="#5C5F69" />
                                                                                                     </Trigger>
                                                                                                 </ControlTemplate.Triggers>
                                                                                             </ControlTemplate>
@@ -3449,7 +3453,7 @@
                                                                                 <RowDefinition Height="78"/>
                                                                                 <RowDefinition Height="*"/>
                                                                             </Grid.RowDefinitions>
-                                                                            <Border Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" BorderBrush="#7F7F7F" BorderThickness="4" Height="78" Width="78">
+                                                                            <Border Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" BorderBrush="#9A9CA3" BorderThickness="4" Height="78" Width="78">
                                                                                 <Image Stretch="Uniform" StretchDirection="Both" Source="{Binding Image}" Height="70" Width="70"/>
                                                                             </Border>
                                                                             <Grid Grid.Column="1" Margin="20,0,0,0" HorizontalAlignment="Stretch">
@@ -3463,7 +3467,7 @@
                                                                                 </Grid.ColumnDefinitions>
                                                                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,0,3" Text="{Binding Name}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Foreground="{StaticResource LightForeground}" TextTrimming="CharacterEllipsis" />
                                                                                 <TextBlock Grid.Row="1" Grid.Column="0"  Margin="0,5,0,0" Text="{Binding Description}" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" TextTrimming="CharacterEllipsis" Foreground="{StaticResource DarkForeground}" TextWrapping="WrapWithOverflow" FontSize="13"/>
-                                                                                <Border Margin="0,-4,0,0" Padding="8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                <Border Margin="0,-4,0,0" Padding="8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                     <Border.ToolTip>
                                                                                         <ToolTip Content="{Binding AchievementType}" />
                                                                                     </Border.ToolTip>
@@ -3479,7 +3483,7 @@
                                                                                     </Border.Style>
                                                                                     <Path Stroke="White" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Height="16" Width="16" Stretch="Uniform" Data="M9.19306,1.4364 C12.3075,1.99877 14.6701,4.72349 14.6701,8.00002 C14.6701,11.2765 12.3075,14.0013 9.19306,14.5636 M4.22555,2.5 C4.98692,1.97649 5.86241,1.60698 6.80709,1.4364 M6.80709,14.5636 C5.86241,14.3931 4.98692,14.0235 4.22555,13.5 M1.44606,6.75503 C1.62066,5.83026 1.98614,4.97294 2.49999,4.22558 M2.49999,11.7745 C1.98614,11.0271 1.62066,10.1698 1.44606,9.245 M5.69404,7.73683 L7.27132,9.31396 L10.2265,6.35876"/>
                                                                                 </Border>
-                                                                                <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                     <Border.ToolTip>
                                                                                         <ToolTip Content="{Binding AchievementType}" />
                                                                                     </Border.ToolTip>
@@ -3495,7 +3499,7 @@
                                                                                     </Border.Style>
                                                                                     <Path Fill="White" Height="16" Width="10" Stretch="Uniform" Data="m 5,0.70507812 c -0.3451797,0 -0.625,0.27982035 -0.625,0.62499998 v 2.2695313 c 0,0.3451696 0.2798203,0.625 0.625,0.625 0.3451797,0 0.625,-0.2798304 0.625,-0.625 V 1.3300781 C 5.625,0.98489847 5.3451797,0.70507813 5,0.70507812 Z m 3.4003906,0 c -0.3451793,10e-9 -0.625,0.2798207 -0.625,0.62499998 v 4.9882813 c 0,0.3451793 0.2798207,0.625 0.625,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499998 -0.625,-0.62499998 z M 5,6.2519531 c -0.2304695,0 -0.4420115,0.1268886 -0.5507813,0.3300781 L 3.2421875,8.8359375 0.609375,9.234375 C 0.37368147,9.2701049 0.17919773,9.436733 0.10742187,9.6640625 0.03564672,9.891382 0.09904352,10.140088 0.27148438,10.304688 l 1.86718752,1.78125 -0.4101563,2.480468 c -0.03813,0.2305 0.055058,0.461863 0.2421875,0.601563 0.1871397,0.139799 0.4363148,0.1644 0.6464844,0.0625 L 5,14.074219 l 2.3828125,1.15625 c 0.2101796,0.1019 0.4593547,0.0773 0.6464844,-0.0625 0.1871296,-0.1397 0.2803174,-0.371063 0.2421875,-0.601563 L 7.8613281,12.085938 9.7285156,10.304688 C 9.9009553,10.140088 9.964348,9.891382 9.8925781,9.6640625 9.8207983,9.436733 9.6263145,9.2701049 9.390625,9.234375 L 6.7578125,8.8359375 5.5507812,6.5820312 C 5.4420115,6.3788417 5.2304695,6.2519531 5,6.2519531 Z M 1.5996094,0.70507812 c -0.3451793,0 -0.62500003,0.2798207 -0.62500002,0.62499998 v 4.9882813 c 0,0.3451793 0.27982072,0.625 0.62500002,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499997 -0.625,-0.62499998 z"/>
                                                                                 </Border>
-                                                                                <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                                                                <Border Margin="0,-4,0,0" Padding="11,8" CornerRadius="16" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                                                                     <Border.ToolTip>
                                                                                         <ToolTip Content="{Binding AchievementType}" />
                                                                                     </Border.ToolTip>
@@ -3530,7 +3534,7 @@
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#45464D" Background="Transparent" CornerRadius="8" Opacity="0.6">
+                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#33363F" Background="Transparent" CornerRadius="8" Opacity="0.6">
                                                                             <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
@@ -3566,7 +3570,7 @@
                                             </Border.Style>
                                             <StackPanel Margin="35,25,35,10">
 
-                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.Steam.Count, Mode=OneWay, StringFormat='{}STEAM ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.Steam.Count, Mode=OneWay, StringFormat='{}STEAM ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3"/>
 
                                                 <StackPanel Orientation="Vertical" Margin="6,15">
                                                     <StackPanel.Style>
@@ -3639,8 +3643,8 @@
                                                                                         <RowDefinition Height="Auto"/>
                                                                                     </Grid.RowDefinitions>
                                                                                     <TextBlock Margin="0,3" Text="{Binding Name}" Foreground="#E6E6E6" FontWeight="Bold" />
-                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#D6D6D6" TextWrapping="Wrap"/>
-                                                                                    <TextBlock Grid.Row="2" Margin="0,4" FontSize="10" Foreground="#D6D6D6" FontStyle="Italic" Text="{Binding UnlockedString}">
+                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#DEDEDE" TextWrapping="Wrap"/>
+                                                                                    <TextBlock Grid.Row="2" Margin="0,4" FontSize="10" Foreground="#DEDEDE" FontStyle="Italic" Text="{Binding UnlockedString}">
                                                                                         <TextBlock.Style>
                                                                                             <Style TargetType="{x:Type TextBlock}">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -3761,10 +3765,10 @@
                                                                                     <Thumb>
                                                                                         <Thumb.Template>
                                                                                             <ControlTemplate TargetType="Thumb">
-                                                                                                <Border Name="Border" Background="#45464D" BorderThickness="0" CornerRadius="3" />
+                                                                                                <Border Name="Border" Background="#33363F" BorderThickness="0" CornerRadius="3" />
                                                                                                 <ControlTemplate.Triggers>
                                                                                                     <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                                                                        <Setter TargetName="Border" Property="Background" Value="#555555" />
+                                                                                                        <Setter TargetName="Border" Property="Background" Value="#5C5F69" />
                                                                                                     </Trigger>
                                                                                                 </ControlTemplate.Triggers>
                                                                                             </ControlTemplate>
@@ -3864,7 +3868,7 @@
                                                                             <Border Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" BorderThickness="4" Height="78" Width="78">
                                                                                 <Border.Style>
                                                                                     <Style TargetType="Border">
-                                                                                        <Setter Property="BorderBrush" Value="#7F7F7F"/>
+                                                                                        <Setter Property="BorderBrush" Value="#9A9CA3"/>
                                                                                         <Style.Triggers>
                                                                                             <DataTrigger Binding="{Binding HasEarned}" Value="True">
                                                                                                 <Setter Property="BorderBrush" Value="#FFD700"/>
@@ -3902,7 +3906,7 @@
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#45464D" Background="Transparent" CornerRadius="8" Opacity="0.6">
+                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#33363F" Background="Transparent" CornerRadius="8" Opacity="0.6">
                                                                             <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
@@ -3938,7 +3942,7 @@
                                             </Border.Style>
                                             <StackPanel Margin="35,25,35,10">
 
-                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.Gog.Count, Mode=OneWay, StringFormat='{}GOG ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                                                <TextBlock FontFamily="{Binding TitleFontFamily}" Text="{Binding Achievements.Gog.Count, Mode=OneWay, StringFormat='{}GOG ACHIEVEMENTS ({0})'}" FontSize="{Binding TitleFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#9A9CA3"/>
 
                                                 <StackPanel Orientation="Vertical" Margin="6,15">
                                                     <StackPanel.Style>
@@ -4011,8 +4015,8 @@
                                                                                         <RowDefinition Height="Auto"/>
                                                                                     </Grid.RowDefinitions>
                                                                                     <TextBlock Margin="0,3" Text="{Binding Name}" Foreground="#E6E6E6" FontWeight="Bold" />
-                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#D6D6D6" TextWrapping="Wrap"/>
-                                                                                    <TextBlock Grid.Row="2" Margin="0,4" Foreground="#D6D6D6" FontStyle="Italic" Text="{Binding UnlockedString}">
+                                                                                    <TextBlock Grid.Row="1" Margin="0" Text="{Binding Description}" Foreground="#DEDEDE" TextWrapping="Wrap"/>
+                                                                                    <TextBlock Grid.Row="2" Margin="0,4" Foreground="#DEDEDE" FontStyle="Italic" Text="{Binding UnlockedString}">
                                                                                         <TextBlock.Style>
                                                                                             <Style TargetType="{x:Type TextBlock}">
                                                                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -4133,10 +4137,10 @@
                                                                                     <Thumb>
                                                                                         <Thumb.Template>
                                                                                             <ControlTemplate TargetType="Thumb">
-                                                                                                <Border Name="Border" Background="#45464D" BorderThickness="0" CornerRadius="3" />
+                                                                                                <Border Name="Border" Background="#33363F" BorderThickness="0" CornerRadius="3" />
                                                                                                 <ControlTemplate.Triggers>
                                                                                                     <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                                                                                        <Setter TargetName="Border" Property="Background" Value="#555555" />
+                                                                                                        <Setter TargetName="Border" Property="Background" Value="#5C5F69" />
                                                                                                     </Trigger>
                                                                                                 </ControlTemplate.Triggers>
                                                                                             </ControlTemplate>
@@ -4236,7 +4240,7 @@
                                                                             <Border Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" BorderThickness="4" Height="78" Width="78">
                                                                                 <Border.Style>
                                                                                     <Style TargetType="Border">
-                                                                                        <Setter Property="BorderBrush" Value="#7F7F7F"/>
+                                                                                        <Setter Property="BorderBrush" Value="#9A9CA3"/>
                                                                                         <Style.Triggers>
                                                                                             <DataTrigger Binding="{Binding HasEarned}" Value="True">
                                                                                                 <Setter Property="BorderBrush" Value="#FFD700"/>
@@ -4272,7 +4276,7 @@
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#45464D" Background="Transparent" CornerRadius="8" Opacity="0.6">
+                                                                        <Border Name="Border" BorderThickness="2" BorderBrush="#33363F" Background="Transparent" CornerRadius="8" Opacity="0.6">
                                                                             <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
@@ -4322,7 +4326,7 @@
                                                                 <RowDefinition Height="Auto"/>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=WeeklyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#6e7b80" Margin="20,0" />
+                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=WeeklyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#9A9CA3" Margin="20,0" />
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*" />
@@ -4396,7 +4400,7 @@
                                                                 <RowDefinition Height="Auto"/>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=MonthlyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#6e7b80" Margin="20,0" />
+                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=MonthlyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#9A9CA3" Margin="20,0" />
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*" />
@@ -4470,7 +4474,7 @@
                                                                 <RowDefinition Height="Auto"/>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=YearlyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#6e7b80" Margin="20,0" />
+                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=YearlyCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#9A9CA3" Margin="20,0" />
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*" />
@@ -4544,7 +4548,7 @@
                                                                 <RowDefinition Height="Auto"/>
                                                                 <RowDefinition Height="*"/>
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=AllTimeCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#6e7b80" Margin="20,0" />
+                                                            <TextBlock Text="{Binding Converter={StaticResource UpperCase}, Path=AllTimeCommunityLeaderboardLabel}" FontFamily="{Binding TitleFontFamily}" FontSize="22" Background="Transparent" Foreground="#9A9CA3" Margin="20,0" />
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*" />
@@ -4661,7 +4665,7 @@
                                                             <Setter TargetName="Border" Property="Opacity" Value="1.0"/>
                                                         </Trigger>
                                                         <Trigger Property="IsSelected" Value="False">
-                                                            <Setter TargetName="Text" Property="Foreground" Value="#EAEAEA" />
+                                                            <Setter TargetName="Text" Property="Foreground" Value="#E8E8E8" />
                                                             <Setter TargetName="Text" Property="Opacity" Value="0.6" />
                                                             <Setter TargetName="Border" Property="Background" Value="Transparent"/>
                                                         </Trigger>
@@ -4735,7 +4739,7 @@
                                                                             <Border Name="Border" CornerRadius="20" RenderTransformOrigin="0.5 0.5" Cursor="Hand" Margin="0 0 0 3" HorizontalAlignment="Stretch">
                                                                                 <Border.Style>
                                                                                     <Style TargetType="Border">
-                                                                                        <Setter Property="Background" Value="#363743"/>
+                                                                                        <Setter Property="Background" Value="#2E323D"/>
                                                                                         <Setter Property="BorderBrush" Value="#00FFFFFF"/>
                                                                                     </Style>
                                                                                 </Border.Style>
@@ -4743,10 +4747,10 @@
                                                                             </Border>
                                                                             <ControlTemplate.Triggers>
                                                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                                 <Trigger Property="IsSelected" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                             </ControlTemplate.Triggers>
                                                                         </ControlTemplate>
@@ -4958,7 +4962,7 @@
                                                                             <Border Name="Border" CornerRadius="20" RenderTransformOrigin="0.5 0.5" Cursor="Hand" Margin="0 0 0 3" HorizontalAlignment="Stretch">
                                                                                 <Border.Style>
                                                                                     <Style TargetType="Border">
-                                                                                        <Setter Property="Background" Value="#363743"/>
+                                                                                        <Setter Property="Background" Value="#2E323D"/>
                                                                                         <Setter Property="BorderBrush" Value="#00FFFFFF"/>
                                                                                     </Style>
                                                                                 </Border.Style>
@@ -4966,10 +4970,10 @@
                                                                             </Border>
                                                                             <ControlTemplate.Triggers>
                                                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                                 <Trigger Property="IsSelected" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                             </ControlTemplate.Triggers>
                                                                         </ControlTemplate>
@@ -5168,7 +5172,7 @@
                                                                             <Border Name="Border" CornerRadius="20" RenderTransformOrigin="0.5 0.5" Cursor="Hand" Margin="0 0 0 3" HorizontalAlignment="Stretch">
                                                                                 <Border.Style>
                                                                                     <Style TargetType="Border">
-                                                                                        <Setter Property="Background" Value="#363743"/>
+                                                                                        <Setter Property="Background" Value="#2E323D"/>
                                                                                         <Setter Property="BorderBrush" Value="#00FFFFFF"/>
                                                                                     </Style>
                                                                                 </Border.Style>
@@ -5176,10 +5180,10 @@
                                                                             </Border>
                                                                             <ControlTemplate.Triggers>
                                                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                                 <Trigger Property="IsSelected" Value="True">
-                                                                                    <Setter TargetName="Border" Property="Background" Value="#111115" />
+                                                                                    <Setter TargetName="Border" Property="Background" Value="#0E1014" />
                                                                                 </Trigger>
                                                                             </ControlTemplate.Triggers>
                                                                         </ControlTemplate>
@@ -5403,10 +5407,10 @@
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Grid Background="Transparent">
-                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5323232" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5252832" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#E5121212"/>
+                                        <Setter Property="BorderBrush" Value="#E50E1014"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="BorderBrush" Value="{Binding SelectionBackgroundBrush}" />
@@ -5427,7 +5431,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="RETRO ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="RETRO ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#9A9CA3"/>
                 <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Single">
                     <ListView.Style>
                         <Style TargetType="ListView">
@@ -5497,7 +5501,7 @@
                                                     <Setter Property="BorderBrush" Value="#FFD700"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DateEarned}" Value="{x:Null}">
-                                                            <Setter Property="BorderBrush" Value="#7F7F7F"/>
+                                                            <Setter Property="BorderBrush" Value="#9A9CA3"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -5525,7 +5529,7 @@
                                                 </TextBlock.Style>
                                             </TextBlock>
                                         </Grid>
-                                        <Border Padding="8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                        <Border Padding="8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                             <Border.ToolTip>
                                                 <ToolTip Content="{Binding AchievementType}" />
                                             </Border.ToolTip>
@@ -5541,7 +5545,7 @@
                                             </Border.Style>
                                             <Path Stroke="White" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Height="16" Width="16" Stretch="Uniform" Data="M9.19306,1.4364 C12.3075,1.99877 14.6701,4.72349 14.6701,8.00002 C14.6701,11.2765 12.3075,14.0013 9.19306,14.5636 M4.22555,2.5 C4.98692,1.97649 5.86241,1.60698 6.80709,1.4364 M6.80709,14.5636 C5.86241,14.3931 4.98692,14.0235 4.22555,13.5 M1.44606,6.75503 C1.62066,5.83026 1.98614,4.97294 2.49999,4.22558 M2.49999,11.7745 C1.98614,11.0271 1.62066,10.1698 1.44606,9.245 M5.69404,7.73683 L7.27132,9.31396 L10.2265,6.35876"/>
                                         </Border>
-                                        <Border Padding="11,8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                        <Border Padding="11,8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                             <Border.ToolTip>
                                                 <ToolTip Content="{Binding AchievementType}" />
                                             </Border.ToolTip>
@@ -5557,7 +5561,7 @@
                                             </Border.Style>
                                             <Path Fill="White" Height="16" Width="10" Stretch="Uniform" Data="m 5,0.70507812 c -0.3451797,0 -0.625,0.27982035 -0.625,0.62499998 v 2.2695313 c 0,0.3451696 0.2798203,0.625 0.625,0.625 0.3451797,0 0.625,-0.2798304 0.625,-0.625 V 1.3300781 C 5.625,0.98489847 5.3451797,0.70507813 5,0.70507812 Z m 3.4003906,0 c -0.3451793,10e-9 -0.625,0.2798207 -0.625,0.62499998 v 4.9882813 c 0,0.3451793 0.2798207,0.625 0.625,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499998 -0.625,-0.62499998 z M 5,6.2519531 c -0.2304695,0 -0.4420115,0.1268886 -0.5507813,0.3300781 L 3.2421875,8.8359375 0.609375,9.234375 C 0.37368147,9.2701049 0.17919773,9.436733 0.10742187,9.6640625 0.03564672,9.891382 0.09904352,10.140088 0.27148438,10.304688 l 1.86718752,1.78125 -0.4101563,2.480468 c -0.03813,0.2305 0.055058,0.461863 0.2421875,0.601563 0.1871397,0.139799 0.4363148,0.1644 0.6464844,0.0625 L 5,14.074219 l 2.3828125,1.15625 c 0.2101796,0.1019 0.4593547,0.0773 0.6464844,-0.0625 0.1871296,-0.1397 0.2803174,-0.371063 0.2421875,-0.601563 L 7.8613281,12.085938 9.7285156,10.304688 C 9.9009553,10.140088 9.964348,9.891382 9.8925781,9.6640625 9.8207983,9.436733 9.6263145,9.2701049 9.390625,9.234375 L 6.7578125,8.8359375 5.5507812,6.5820312 C 5.4420115,6.3788417 5.2304695,6.2519531 5,6.2519531 Z M 1.5996094,0.70507812 c -0.3451793,0 -0.62500003,0.2798207 -0.62500002,0.62499998 v 4.9882813 c 0,0.3451793 0.27982072,0.625 0.62500002,0.625 0.3451793,0 0.625,-0.2798207 0.625,-0.625 V 1.3300781 c 0,-0.34517928 -0.2798207,-0.62499997 -0.625,-0.62499998 z"/>
                                         </Border>
-                                        <Border Padding="11,8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2A2B34" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
+                                        <Border Padding="11,8" CornerRadius="16" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B1D24" ToolTipService.InitialShowDelay="0" ToolTipService.VerticalOffset="-30">
                                             <Border.ToolTip>
                                                 <ToolTip Content="{Binding AchievementType}" />
                                             </Border.ToolTip>
@@ -5636,10 +5640,10 @@
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Grid Background="Transparent">
-                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5323232" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5252832" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#E5121212"/>
+                                        <Setter Property="BorderBrush" Value="#E50E1014"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="BorderBrush" Value="{Binding SelectionBackgroundBrush}" />
@@ -5660,7 +5664,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="GOG ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="GOG ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#9A9CA3"/>
                 <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Single">
                     <ListView.Style>
                         <Style TargetType="ListView">
@@ -5729,7 +5733,7 @@
                                                     <Setter Property="BorderBrush" Value="#FFD700"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DateEarned}" Value="{x:Null}">
-                                                            <Setter Property="BorderBrush" Value="#7F7F7F"/>
+                                                            <Setter Property="BorderBrush" Value="#9A9CA3"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -5815,10 +5819,10 @@
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Grid Background="Transparent">
-                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5323232" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Name="Border" CornerRadius="30" Height="40" Width="40" BorderThickness="3" Background="#E5252832" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#E5121212"/>
+                                        <Setter Property="BorderBrush" Value="#E50E1014"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="BorderBrush" Value="{Binding SelectionBackgroundBrush}" />
@@ -5839,7 +5843,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="STEAM ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#6e7b80"/>
+                <TextBlock Margin="0,0,0,25" FontFamily="LAUNCHBOX_THEME_FOLDER/Fonts/Poppins-Regular.ttf#Poppins" Text="STEAM ACHIEVEMENTS" FontSize="{Binding TitleFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#9A9CA3"/>
                 <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionMode="Single">
                     <ListView.Style>
                         <Style TargetType="ListView">
@@ -5909,7 +5913,7 @@
                                                     <Setter Property="BorderBrush" Value="#FFD700"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding DateEarned}" Value="{x:Null}">
-                                                            <Setter Property="BorderBrush" Value="#7F7F7F"/>
+                                                            <Setter Property="BorderBrush" Value="#9A9CA3"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
