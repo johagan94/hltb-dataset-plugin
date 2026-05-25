@@ -9,7 +9,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              Focusable="False"
-             Background="#C52A2B34"
+             Background="#1B1D24"
              FontFamily="{Binding FontFamily}"
              FontSize="{Binding FontSize}"
              FontWeight="{Binding FontWeight}"
@@ -20,10 +20,10 @@
                 <Trigger Property="DataGridCell.IsSelected" Value="True">
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="Foreground" Value="#70FFFFFF" />
+                    <Setter Property="Foreground" Value="#DEFFFFFF" />
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Foreground" Value="#70FFFFFF" />
+            <Setter Property="Foreground" Value="#DEFFFFFF" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="FocusVisualStyle">
                 <Setter.Value>
@@ -58,10 +58,10 @@
                 <Trigger Property="DataGridCell.IsSelected" Value="True">
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="Foreground" Value="#70FFFFFF" />
+                    <Setter Property="Foreground" Value="#DEFFFFFF" />
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Foreground" Value="#70FFFFFF" />
+            <Setter Property="Foreground" Value="#DEFFFFFF" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="FocusVisualStyle">
                 <Setter.Value>
@@ -386,12 +386,12 @@
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="#08FFFFFF" />
                                     <Setter Property="BorderBrush" Value="#08FFFFFF" />
-                                    <Setter Property="Foreground" Value="#70FFFFFF" />
+                                    <Setter Property="Foreground" Value="#DEFFFFFF" />
                                 </Trigger>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                     <Setter Property="Background" Value="#10FFFFFF" />
                                     <Setter Property="BorderBrush" Value="#10FFFFFF" />
-                                    <Setter Property="Foreground" Value="#70FFFFFF" />
+                                    <Setter Property="Foreground" Value="#DEFFFFFF" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -404,7 +404,7 @@
                             <Setter Property="Padding" Value="10" />
                             <Setter Property="Margin" Value="0,0,0,15"/>
                             <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="Foreground" Value="#40CCCCCC" />
+                            <Setter Property="Foreground" Value="#9A9CA3" />
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
                             <Setter Property="cal:Message.Attach" Value="[Event PreviewMouseRightButtonUp] = [Action OnHeaderRightClick($eventArgs)]" />

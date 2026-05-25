@@ -254,8 +254,8 @@
 
         <!-- Status Text -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10 4 0 0" VerticalAlignment="Top">
-            <TextBlock Text="|" Foreground="White" Opacity="0.3" Margin="0 0 20 0" />
-            <TextBlock Grid.Column="1" Foreground="White" FontSize="11" Margin="0 4 0 0" FontFamily="LAUNCHBOX_ROOT_FOLDER/LBThemes/Big Details/Fonts/Gilroy-Light.ttf#Gilroy Light" VerticalAlignment="Center" TextAlignment="Left" Opacity="0.3" Text="{Binding StatusText}" />
+            <TextBlock Text="|" Foreground="#9A9CA3" Opacity="0.6" Margin="0 0 20 0" />
+            <TextBlock Grid.Column="1" Foreground="#E8E8E8" FontSize="11" Margin="0 4 0 0" FontFamily="LAUNCHBOX_ROOT_FOLDER/LBThemes/Big Details/Fonts/Gilroy-Light.ttf#Gilroy Light" VerticalAlignment="Center" TextAlignment="Left" Opacity="0.6" Text="{Binding StatusText}" />
         </StackPanel>
 
         <!-- Controls Popup Button -->
@@ -288,7 +288,7 @@
                 </ToggleButton.Template>
             </ToggleButton>
             <Popup IsOpen="{Binding IsChecked, ElementName=ControlsButton}" StaysOpen="False" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Scroll">
-                <Border Height="270" Width="120" Background="#DD1F2027" CornerRadius="5">
+                <Border Height="270" Width="120" Background="#F00E1014" BorderBrush="#33363F" BorderThickness="1" CornerRadius="8">
                     <Grid Width="80" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="0 25">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="183"/>
@@ -355,7 +355,7 @@
                                         </local:RoutedEventTrigger>
                                     </i:Interaction.Triggers>
                                 </Slider>
-                                <TextBlock x:Name="VolumeText" Text="{Binding Path=VolumeValue, NotifyOnTargetUpdated=True}" IsHitTestVisible="False" Foreground="#DD141622" FontSize="11" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10">
+                                <TextBlock x:Name="VolumeText" Text="{Binding Path=VolumeValue, NotifyOnTargetUpdated=True}" IsHitTestVisible="False" Foreground="#E8E8E8" FontSize="11" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 10">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Opacity" Value="0"/>
@@ -540,7 +540,7 @@
                     </Grid>
                 </Border>
             </Popup>
-            <TextBlock Text="|" Foreground="White" Opacity="0.3" Margin="25 0 15 0" />
+            <TextBlock Text="|" Foreground="#9A9CA3" Opacity="0.6" Margin="25 0 15 0" />
         </StackPanel>
     </Grid>
 </UserControl>

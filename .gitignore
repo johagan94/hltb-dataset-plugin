@@ -25,3 +25,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Backup/temp theme snapshots
+LBThemes/*.backup_*/
