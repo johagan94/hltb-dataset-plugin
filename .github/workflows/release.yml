@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build
+        run: dotnet build HltbDatasetPlugin.csproj -c Release
+
+      - name: Sign with Azure Trusted Signing
+        uses: azure/trusted-signing-action@v0.5.0
+        with:
+          endpoint: https://eus.codesigning.azure.net
+          trusted-signing-account-name: ${{ secrets.TRUSTED_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ secrets.TRUSTED_SIGNING_CERT_PROFILE }}
+          files: bin/Release/net9.0-windows/HLTB.dll
+          files-type: dll
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Upload signed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HLTB-signed
+          path: bin/Release/net9.0-windows/HLTB.dll
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: bin/Release/net9.0-windows/HLTB.dll
+          generate_release_notes: true

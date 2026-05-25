@@ -18,9 +18,14 @@
     <Compile Remove="obj\**\*.cs" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <LaunchBoxPluginsDll Condition="Exists('C:\Users\Jack\LaunchBox\Core\Unbroken.LaunchBox.Plugins.dll')">C:\Users\Jack\LaunchBox\Core\Unbroken.LaunchBox.Plugins.dll</LaunchBoxPluginsDll>
+    <LaunchBoxPluginsDll Condition="!Exists('C:\Users\Jack\LaunchBox\Core\Unbroken.LaunchBox.Plugins.dll')">$(MSBuildProjectDirectory)\lib\Unbroken.LaunchBox.Plugins.dll</LaunchBoxPluginsDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="Unbroken.LaunchBox.Plugins">
-      <HintPath>C:\Users\Jack\LaunchBox\Core\Unbroken.LaunchBox.Plugins.dll</HintPath>
+      <HintPath>$(LaunchBoxPluginsDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
