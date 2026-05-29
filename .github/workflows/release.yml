@@ -6,12 +6,15 @@ on:
       - 'v*'
 
 permissions:
-  contents: write
   id-token: write
+  contents: write
+  actions: read
 
 jobs:
-  build-and-sign:
+  build:
     runs-on: windows-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,25 +25,30 @@ jobs:
       - name: Build
         run: dotnet build HltbDatasetPlugin.csproj -c Release
 
-      - name: Sign with Azure Trusted Signing
-        uses: azure/trusted-signing-action@v0.5.0
-        with:
-          endpoint: https://eus.codesigning.azure.net
-          trusted-signing-account-name: ${{ secrets.TRUSTED_SIGNING_ACCOUNT_NAME }}
-          certificate-profile-name: ${{ secrets.TRUSTED_SIGNING_CERT_PROFILE }}
-          files: bin/Release/net9.0-windows/HLTB.dll
-          files-type: dll
-          timestamp-rfc3161: http://timestamp.acs.microsoft.com
-          timestamp-digest: SHA256
-
-      - name: Upload signed artifact
+      - name: Upload unsigned artifact
+        id: upload
         uses: actions/upload-artifact@v4
         with:
-          name: HLTB-signed
+          name: HLTB-unsigned
           path: bin/Release/net9.0-windows/HLTB.dll
+
+  sign:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sign with SignPath
+        id: signing
+        uses: SignPath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: hltb-dataset-plugin
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+          output-artifact-directory: signed-output
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: bin/Release/net9.0-windows/HLTB.dll
+          files: signed-output/HLTB.dll
           generate_release_notes: true
