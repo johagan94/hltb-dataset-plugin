@@ -1,0 +1,9 @@
+# Normalize line endings to avoid phantom CRLF/LF whole-file diffs/conflicts
+# (root cause of the stash-pop "XAML conflicts" — Git saw every line as changed).
+* text=auto
+
+# Be explicit for the markup/source that previously caused trouble.
+*.xaml   text
+*.cs     text
+*.csproj text
+*.sln    text
